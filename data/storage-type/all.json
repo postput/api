@@ -1,0 +1,179 @@
+[
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 1,
+      "name": "memory",
+      "config": {
+        "custom": {},
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 2,
+      "name": "filesystem",
+      "config": {
+        "custom": {
+          "path": "public/default"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 3,
+      "name": "openstack",
+      "config": {
+        "custom": {
+          "username": "xxxxxxxxx",
+          "password": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "tenantId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "region": "xxxx",
+          "authUrl": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "version": "v2.0",
+          "container": "mycontainer"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 4,
+      "name": "s3",
+      "config": {
+        "custom": {
+          "keyId": "xxxxxxxxxxxxxxxxxxxxxx",
+          "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "container": "mycontainer",
+          "region": "us-xxx-1"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 5,
+      "name": "gcs",
+      "config": {
+        "custom": {
+          "keyFile": {
+            "type": "service_account",
+            "project_id": "xxxx-xxxx-xx",
+            "private_key_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-----END PRIVATE KEY-----\n",
+            "client_email": "xxx-xxxx-xxx@xx.xxxxx.xx",
+            "client_id": "xxxxxxxxxxxxxxxxxxxxx",
+            "auth_uri": "https://xxxx.google.com/o/oauth2/auth",
+            "token_uri": "https://xxxx.google.com/o/oauth2/token",
+            "auth_provider_x509_cert_url": "https://www.xxxxx.com/xxxxx/xxx/xxxx",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/xxxxxxxxxxxxxxxxxxxx"
+          },
+          "container": "image-speaky",
+          "projectId": "pacific-cargo-701"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 6,
+      "name": "azure",
+      "config": {
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 7,
+      "name": "webfolder",
+      "config": {
+        "custom": {
+          "method": "GET",
+          "uri": "https://xxxx.xxx.xxx",
+          "qs": {
+            "your-query-param": "your value",
+            "another-query-param": "another value"
+          }
+        },
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 8,
+      "name": "proxy",
+      "config": {
+        "custom": {
+          "allowedHosts": [
+            "www.xxxxxx.xxx"
+          ]
+        },
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 9,
+      "name": "spaces",
+      "config": {
+        "custom": {
+          "endpoint": "fra1.digitaloceanspaces.com",
+          "bucket": "yourbucket",
+          "accessKeyId": "xxxxxxxxxxxxxxxxxxxxx",
+          "secretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 10,
+      "name": "scaleway",
+      "config": {
+        "custom": {
+          "endpoint": "s3.fr-par.scw.cloud",
+          "bucket": "yourbucket",
+          "accessKeyId": "xxxxxxxxxxxxxxxxxxxxx",
+          "secretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  }
+]

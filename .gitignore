@@ -1,0 +1,8 @@
+/node_modules/
+.idea/
+public/*
+secret/*
+!public/.gitkeep
+!secret/.gitkeep
+data/storage/*
+!data/storage/default.json

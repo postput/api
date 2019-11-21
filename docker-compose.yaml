@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  postput_db:
+    image: postgres:12
+    volumes:
+      - db_data_postput:/var/lib/postgresql/data
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: postput
+      POSTGRES_USER: postput
+      POSTGRES_DB: postput
+    ports:
+      - '5555:5432'
+  postput_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRESQL_HOST: postput_db
+      POSTGRESQL_PASSWORD: postput
+      POSTGRESQL_USER: postput
+      POSTGRESQL_DB: postput
+      POSTGRESQL_PORT: 5432
+      SEQUELIZE_FORCE_SYNC: "true"
+    ports:
+      - '2000:3000'
+volumes:
+  db_data_postput: {}

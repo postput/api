@@ -1,0 +1,34 @@
+[
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_memory_files",
+      "uuid": "584eaf29-8a1a-43cf-b603-877632f26bf4",
+      "typeId": 1,
+      "config": {
+        "custom": {},
+        "access": {},
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_filesystem_files",
+      "uuid": "d495d471-3743-40d9-a58a-eb578441ca92",
+      "typeId": 2,
+      "config": {
+        "custom": {
+          "path": "public/default"
+        },
+        "access": {},
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  }
+]
