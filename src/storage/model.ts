@@ -36,6 +36,17 @@ export class StorageType extends Model<StorageType>{
         defaultValue: {}
     })
     data: any;
+
+    @serializable(date())
+    @CreatedAt
+    creationDate: Date;
+
+    @serializable(date())
+    @UpdatedAt
+    updatedOn: Date;
+
+    @DeletedAt
+    deletionDate: Date;
 }
 
 @Table
