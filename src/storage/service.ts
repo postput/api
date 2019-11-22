@@ -102,9 +102,8 @@ export class StorageService {
             if (isUUID(firstPart)) {
                 return this.findByUUID(request.query.storageId);
             }
-            const storage = await this.findByName(firstPart);
-            return storage;
         }
+        return this.findByNameOrDefault(firstPart);
     }
 
     async findByUUID(uuid) {
@@ -115,6 +114,10 @@ export class StorageService {
         return StorageRepository.instance.fetchByName(name);
     }
 
+    async findByNameOrDefault(name) {
+        return StorageRepository.instance.fetchByNameOrDefault(name);
+    }
+    
     async findAllStorage() {
         return StorageRepository.instance.fetchAllStorage();
     }

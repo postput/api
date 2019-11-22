@@ -21,6 +21,28 @@ export class StorageRepository{
         return Storage.findOne({ where: { [Op.or]: [ {name: string, uuid: string} ] }, include:[{model: StorageType, required: true}]});
     }
 
+    async fetchDefault(){
+        return Storage.findOne({ where: { isDefault: true }, include:[{model: StorageType, required: true}]});
+    }
+
+    async fetchFirst(){
+        return Storage.findOne({ order: [['id','ASC']], include:[{model: StorageType, required: true}]});
+    }
+
+    async fetchByNameOrDefault(name: string){
+        let storage;
+        if(name){
+            storage = await this.fetchByName(name);
+        }
+        if(!storage){
+            storage = await this.fetchDefault();
+        }
+        if(!storage){
+            storage = await this.fetchFirst();
+        }
+        return storage;
+    }
+
     async fetchByName(name: string){
         return Storage.findOne({ where: { name: name }, include:[{model: StorageType, required: true}]});
     }

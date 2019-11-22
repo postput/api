@@ -12,6 +12,8 @@ import {join} from "path";
 import {S3, Endpoint} from 'aws-sdk';
 import {URLHelper} from "../helper/url";
 import {oc} from "ts-optchain";
+import * as request from "request";
+import appConfig from "../config/app";
 
 export class UploadService {
 
@@ -30,6 +32,11 @@ export class UploadService {
 
 
     async post(req, res) {
+        if(req.query.url){
+            const response = await this.postURL(req, res);
+            response.pipe(res);
+            return;
+        }
         const storage = await StorageService.instance.findByRequest(req);
         const uploads = await this.uploadToStorage(storage, req);
         uploads.forEach(upload => {
@@ -38,6 +45,16 @@ export class UploadService {
         res.json(serialize(uploads)).end();
     }
 
+    async postURL(req, res){
+        const storage = await StorageService.instance.findByRequest(req);
+        const url = req.query.url;
+        const readStream = await request({url: url});
+        const formData = {
+            attachments: readStream
+        };
+        return request({method: 'POST', url: 'http://localhost:' + appConfig.listen_port + '/' + storage.name, formData: formData});
+    }
+    
     async uploadToStorage(storage: Storage, req: Request) {
 
         switch (storage.type.name) {

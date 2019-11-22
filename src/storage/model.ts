@@ -18,7 +18,7 @@ export class StorageType extends Model<StorageType>{
     @AutoIncrement
     @Column
     id: number;
-
+    
     @serializable
     @Unique
     @AllowNull(false)
@@ -74,6 +74,13 @@ export class Storage extends Model<Storage>{
     @Column
     name: string;
 
+    @serializable
+    @AllowNull(false)
+    @Column({
+        defaultValue: false
+    })
+    isDefault: boolean;
+    
     @serializable
     @ForeignKey(() => StorageType)
     @Column

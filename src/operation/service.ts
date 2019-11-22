@@ -80,10 +80,34 @@ export class OperationService {
 
 
                 break;
-            case 'webp':
+            case 'format':
+
+                const rawFormatOptions = query.formatOptions || '{}';
+                const formatOptions = JSON.parse(rawFormatOptions);
+
+                switch(value) {
+                    case 'webp' :
+                        return sharp().webp(formatOptions);
+                        break;
+                    case 'jpeg' :
+                        return sharp().jpeg(formatOptions);
+                        break;
+                    case 'jpg' :
+                        return sharp().jpeg(formatOptions);
+                        break;
+                    case 'png' :
+                        return sharp().png(formatOptions);
+                        break;
+                    case 'tiff' :
+                        return sharp().tiff(formatOptions);
+                        break;
+                    case 'raw' :
+                        return sharp().raw();
+                        break;
+                }
+
                 const webPQuality = parseInt(query.webPQuality);
-                return sharp().webp();
-                break;
+
             case 'resize':
                 let values = value.split(',');
                 return sharp().resize(parseInt(values[0]), parseInt(values[1]));

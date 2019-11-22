@@ -3,6 +3,7 @@
     "model": "Storage",
     "data": {
       "name": "my_memory_files",
+      "isDefault": false,
       "uuid": "584eaf29-8a1a-43cf-b603-877632f26bf4",
       "typeId": 1,
       "config": {
@@ -18,6 +19,7 @@
     "model": "Storage",
     "data": {
       "name": "my_filesystem_files",
+      "isDefault": true,
       "uuid": "d495d471-3743-40d9-a58a-eb578441ca92",
       "typeId": 2,
       "config": {
