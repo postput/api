@@ -1,0 +1,151 @@
+[
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_openstack_files",
+      "uuid": "c2ba4b53-41fa-483f-9f79-e8bc8a66dd85",
+      "typeId": 3,
+      "config": {
+        "custom": {
+          "username": "xxxxxxxxxxxx",
+          "password": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "tenantId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "region": "xxxx",
+          "authUrl": "https://auth.cloud.xxxx.net/",
+          "version": "v2.0",
+          "container": "mycontainer"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_s3_files",
+      "uuid": "c2ba4b53-41fa-483f-9f79-e8bc8a66dd86",
+      "typeId": 4,
+      "config": {
+        "custom": {
+          "keyId": "XXXXXXXXXXXXXXXXXXXXX",
+          "key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "container": "mycontainer",
+          "region": "us-east-1"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_webfolder_files",
+      "uuid": "c2ba4b53-41fa-483f-9f79-e8bc8a66dd64",
+      "typeId": 7,
+      "config": {
+        "custom": {
+          "method": "GET",
+          "uri": "https://xxxxxxx.xxxx.com",
+          "qs": {
+            "your-query-param": "your value",
+            "another-query-param": "another value"
+          }
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_proxy_files",
+      "uuid": "c2ba4b53-41fa-483f-9f79-e8bc8a66dd14",
+      "typeId": 8,
+      "config": {
+        "custom": {
+          "allowedHosts": [
+            "www.xxxxxx.xxx"
+          ]
+        },
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_google_files",
+      "uuid": "c2ba4b53-41fa-483f-9f79-e8bc8a66dd19",
+      "typeId": 5,
+      "config": {
+        "custom": {
+          "keyFile": {
+            "type": "service_account",
+            "project_id": "xxxx-xxxx-xx",
+            "private_key_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-----END PRIVATE KEY-----\n",
+            "client_email": "xxx-xxxx-xxx@xx.xxxxx.xx",
+            "client_id": "xxxxxxxxxxxxxxxxxxxxx",
+            "auth_uri": "https://xxxx.google.com/o/oauth2/auth",
+            "token_uri": "https://xxxx.google.com/o/oauth2/token",
+            "auth_provider_x509_cert_url": "https://www.xxxxx.com/xxxxx/xxx/xxxx",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/xxxxxxxxxxxxxxxxxxxx"
+          },
+          "container": "image-speaky",
+          "projectId": "pacific-cargo-701"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_spaces_files",
+      "uuid": "c2ba4b53-41fa-483f-9f79-e8bc8a66dd10",
+      "typeId": 9,
+      "config": {
+        "custom": {
+          "endpoint": "fra1.digitaloceanspaces.com",
+          "bucket": "yourbucket",
+          "accessKeyId": "xxxxxxxxxxxxxxxxxxxxx",
+          "secretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "Storage",
+    "data": {
+      "name": "my_scaleway_files",
+      "uuid": "56ee590f-ac82-4413-8747-736ec63814e8",
+      "typeId": 10,
+      "config": {
+        "custom": {
+          "endpoint": "s3.fr-par.scw.cloud",
+          "bucket": "yourbucket",
+          "accessKeyId": "xxxxxxxxxxxxxxxxxxxxx",
+          "secretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "allowUpload": true,
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  }
+
+
+
+]

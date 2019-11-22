@@ -142,7 +142,7 @@ export class UploadService {
 
 
     async uploadPartWithS3(storage, upload: Upload) {
-        const fileName = uuid() + '.' + upload.type.extension;
+        const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
         const customConfig = storage.config.custom;
         const spacesEndpoint = new Endpoint(customConfig.endpoint);
         customConfig.endpoint = spacesEndpoint;
@@ -161,7 +161,7 @@ export class UploadService {
 
     uploadPartWithPkgCloud(storage, upload: Upload) {
         return new Promise((resolve, reject) => {
-            const fileName = uuid() + '.' + upload.type.extension;
+            const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
             upload.fileName = fileName;
             upload.urls = [fileName];
             const config = storage.config.custom;
@@ -197,7 +197,7 @@ export class UploadService {
         return new Promise((resolve, reject) => {
 
             const path = StorageService.getPath(storage);
-            const fileName = uuid() + '.' + upload.type.extension;
+            const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
             const fullPath = join(path , fileName);
 
 

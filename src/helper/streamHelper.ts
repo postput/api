@@ -17,4 +17,13 @@ export class StreamHelper{
         }
         return Buffer.concat(buffer);
     }
+
+    static toBufferSync(stream){
+        let buffer = [];
+        for (let chunk of stream) {
+            buffer.push(chunk);
+        }
+        return Buffer.concat(buffer);
+    }
+
 }

@@ -3,6 +3,9 @@ import {FileType, Upload} from "../upload/model";
 import * as fileType from "file-type";
 import * as multiparty from 'multiparty';
 import {values} from 'lodash';
+import {lookup, extension } from 'mime-types';
+import {FileTypeResult} from "file-type";
+import {StreamHelper} from "./streamHelper";
 
 export class FormHelper{
     static async getBuffers(request){
@@ -10,12 +13,15 @@ export class FormHelper{
             const uploads : any = {};
             const form = new multiparty.Form();
 
+            let nameOverrides : any = request.query['name-overrides'] || '{}';
+            nameOverrides = JSON.parse(nameOverrides);
+
             form.on('error', (error)=> {
                 Logger.error(error);
                 reject(error);
             });
 
-            form.on('part', (part) =>{
+            form.on('part', async (part) =>{
 
                 if (!part.filename) {
                     // filename is not defined when this is a field and not a file
@@ -30,9 +36,14 @@ export class FormHelper{
                     part.on('data', data => {
                         if(!uploads[part.name]){
                             const upload = new Upload();
-                            const fileTypeResult = FileType.fromFileType(fileType(data));
+                            let ft : any = fileType(data);
+                            if(!ft){
+                                ft = FormHelper.guessFileType(part);
+                            }
+                            const fileTypeResult = FileType.fromFileType(ft);
                             upload.fieldName = part.name;
                             upload.originalName = part.filename;
+                            upload.nameOverride = nameOverrides[part.name] || request.query['name-override'] ;
                             upload.type = fileTypeResult;
                             upload.data = data;
                             uploads[part.name] = upload;
@@ -54,5 +65,30 @@ export class FormHelper{
             });
             form.parse(request);
         });
+    }
+
+    static guessFileType(part){
+        const fileName = part.filename;
+        const type= {
+            ext: 'unknown',
+            mime: 'application/octet-stream'
+        };
+        if(fileName){
+
+            const defaultExtension = fileName.substr(fileName.lastIndexOf('.') + 1);
+            if(defaultExtension){
+                type.ext= defaultExtension;
+            }
+            const mime = lookup(fileName);
+            const ext = extension(fileName);
+
+            if(mime){
+                type.mime = mime
+            }
+            if(ext){
+                type.ext = ext
+            }
+        }
+        return type;
     }
 }

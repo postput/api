@@ -22,6 +22,8 @@ export class Upload{
     fieldName: string;
     @serializable
     originalName: string;
+    @serializable
+    nameOverride: string;
     @serializable(object(FileType))
     type: FileType;
     @serializable(list(primitive()))
