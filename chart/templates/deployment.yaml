@@ -1,34 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "asset.fullname" . }}
+  name: {{ include "postput-api.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "asset.name" . }}
-    helm.sh/chart: {{ include "asset.chart" . }}
+    app.kubernetes.io/name: {{ include "postput-api.name" . }}
+    helm.sh/chart: {{ include "postput-api.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "asset.name" . }}
+      app.kubernetes.io/name: {{ include "postput-api.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "asset.name" . }}
+        app.kubernetes.io/name: {{ include "postput-api.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       imagePullSecrets:
 {{- toYaml .Values.image.pullSecrets | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "asset.image" . }}
+          image: {{ include "postput-api.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             {{- range .Values.env }}
             - name: {{ .name }}
-              value: {{ .value }}
+              value: {{ .value | quote }}
             {{- end }}
           ports:
             - name: http
@@ -36,14 +36,24 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
+          volumeMounts:
+            - name: extra-storages
+              mountPath: "/opt/app/data/storage/"
+              readOnly: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        {{- if .Values.storages }}
+        - name: extra-storages
+          secret:
+            secretName: {{ template "postput-api.fullname" . }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

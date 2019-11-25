@@ -1,6 +1,5 @@
 import * as express from "express";
 require('express-async-errors');
-import * as bodyParser from "body-parser";
 import { Env } from "./helper/env";
 import { SequelizeBuilder } from './sequelizeBuilder'
 import {Fixtures} from "./fixtures";
@@ -87,9 +86,7 @@ export default class App {
         });
 
         this.express.use(cors());
-        this.express.use(bodyParser.json());
         this.express.use(boolParser());
         this.express.use(intParser());
-        this.express.use(bodyParser.urlencoded({ extended: false }));
     }
 }

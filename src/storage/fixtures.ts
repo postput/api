@@ -3,7 +3,7 @@ import {Async} from "../helper/async";
 const fixtures = require('sequelize-fixtures');
 import { SequelizeBuilder } from '../sequelizeBuilder'
 import {readdirSync} from 'fs'
-import {join} from 'path'
+import {join, extname} from 'path'
 
 export class StorageFixtures{
 
@@ -11,15 +11,18 @@ export class StorageFixtures{
         const dataDir = join(__dirname, '../../','data');
         const storageTypeDir = join(dataDir, 'storage-type');
         const storageDir = join(dataDir, 'storage');
-        const storageTypeFiles = readdirSync(storageTypeDir);
-        const storageFiles = readdirSync(storageDir);
+        const customStorageDir = join(storageDir, 'custom');
+        const storageTypeFiles = readdirSync(storageTypeDir).map(file => join(storageTypeDir, file));
+        const storageFiles = readdirSync(storageDir).map(file => join(storageDir, file));
+        const customStorageFiles = readdirSync(customStorageDir).map(file => join(customStorageDir, file));
 
-        await Async.foreach(storageTypeFiles, async file => {
-            await fixtures.loadFile(join(storageTypeDir, file) , SequelizeBuilder.sequelize.models);
-        });
+        const allFiles = storageTypeFiles.concat(storageFiles, customStorageFiles);
 
-        await Async.foreach(storageFiles, async file => {
-            await fixtures.loadFile(join(storageDir, file) , SequelizeBuilder.sequelize.models);
+        await Async.foreach(allFiles, async file => {
+            const ext = extname(file);
+            if(ext === '.json'){
+                await fixtures.loadFile(file , SequelizeBuilder.sequelize.models);
+            }
         });
     }
 }

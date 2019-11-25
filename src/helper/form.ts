@@ -4,8 +4,6 @@ import * as fileType from "file-type";
 import * as multiparty from 'multiparty';
 import {values} from 'lodash';
 import {lookup, extension } from 'mime-types';
-import {FileTypeResult} from "file-type";
-import {StreamHelper} from "./streamHelper";
 
 export class FormHelper{
     static async getBuffers(request){
@@ -63,6 +61,7 @@ export class FormHelper{
                 console.log('Upload completed!');
                 resolve(values(uploads));
             });
+
             form.parse(request);
         });
     }

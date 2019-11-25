@@ -14,6 +14,12 @@ import {URLHelper} from "../helper/url";
 import {oc} from "ts-optchain";
 import * as request from "request";
 import appConfig from "../config/app";
+import {raw, urlencoded} from 'body-parser';
+import {entityTooLarge, methodNotAllowed} from '@hapi/boom'
+import * as bytes from 'bytes';
+import {query} from "winston";
+import * as B2 from 'backblaze-b2';
+import {merge} from 'lodash';
 
 export class UploadService {
 
@@ -31,18 +37,37 @@ export class UploadService {
     }
 
 
+    getSize(request){
+        return parseInt(request.headers['content-length']);
+    }
+
     async post(req, res) {
-        if(req.query.url){
-            const response = await this.postURL(req, res);
-            response.pipe(res);
-            return;
-        }
+
         const storage = await StorageService.instance.findByRequest(req);
-        const uploads = await this.uploadToStorage(storage, req);
-        uploads.forEach(upload => {
-            upload.urls = URLHelper.getUrls(storage, upload);
-        });
-        res.json(serialize(uploads)).end();
+        const maxUploadSize = oc(storage).config.maxUploadSize(appConfig.max_upload_size || '100mb');
+
+        const bodySize = this.getSize(req);
+        const maxSize = bytes.parse(maxUploadSize);
+
+            if(bodySize > maxSize){
+                throw entityTooLarge('The body size of this query is too big for this storage "'+ storage.name +'" ('+ bytes(bodySize) +' > '+ maxUploadSize + ')');
+            }
+
+            if(storage.config.allowUpload === false) {
+                throw methodNotAllowed('Upload is not allowed on this storage. ('+ storage.name +'); To enable upload for this storage, set config.allowUpload= true on this storage.');
+            }
+
+            if(req.query.url){
+                const response = await this.postURL(req, res);
+                response.pipe(res);
+                return;
+            }
+            const uploads = await this.uploadToStorage(storage, req);
+            uploads.forEach(upload => {
+                upload.urls = URLHelper.getUrls(storage, upload);
+            });
+            res.json(serialize(uploads)).end();
+
     }
 
     async postURL(req, res){
@@ -52,10 +77,13 @@ export class UploadService {
         const formData = {
             attachments: readStream
         };
-        return request({method: 'POST', url: 'http://localhost:' + appConfig.listen_port + '/' + storage.name, formData: formData});
+        const remainingQuery = req.query;
+        delete remainingQuery.url;
+        return request({method: 'POST', url: 'http://localhost:' + appConfig.listen_port + '/' + storage.name, formData: formData, qs: remainingQuery});
     }
     
     async uploadToStorage(storage: Storage, req: Request) {
+
 
         switch (storage.type.name) {
             case 'memory':
@@ -99,6 +127,9 @@ export class UploadService {
             case 'proxy':
                 throw new Error('Can not upload file to a proxy type storage');
                 break;
+            case 'backblaze':
+                return this.uploadWithBackblaze(storage, req);
+                break;
         }
     }
 
@@ -106,6 +137,14 @@ export class UploadService {
     async uploadWithPkgcloud(storage, req) {
         const parts = await FormHelper.getBuffers(req);
         const files = await this.uploadPartsWithPkgCloud(storage, parts);
+        return files;
+    }
+
+
+
+    async uploadWithBackblaze(storage, req) {
+        const parts = await FormHelper.getBuffers(req);
+        const files = await this.uploadPartsWithBackblaze(storage, parts);
         return files;
     }
 
@@ -134,6 +173,11 @@ export class UploadService {
         return Promise.all<Upload>(files);
     }
 
+    uploadPartsWithBackblaze(storage, parts) {
+        const files = parts.map(part => this.uploadPartWithBackBlaze(storage, part));
+        return Promise.all<Upload>(files);
+    }
+
     uploadPartsWithS3(storage, parts) {
         const files = parts.map(part => this.uploadPartWithS3(storage, part));
         return Promise.all<Upload>(files);
@@ -157,6 +201,25 @@ export class UploadService {
         return this.uploadPartToFilesystemInterface(storage, upload, fs);
     }
 
+    async uploadPartWithBackBlaze(storage, upload: Upload) {
+
+        const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
+        const customConfig : any = storage.config.custom;
+        const b2 = new B2(customConfig);
+        await b2.authorize();
+        const uploadUrlResponse = await b2.getUploadUrl(customConfig.bucketId);
+        await b2.uploadFile({
+            uploadUrl: uploadUrlResponse.data.uploadUrl,
+            uploadAuthToken: uploadUrlResponse.data.authorizationToken,
+            fileName: fileName,
+            contentLength: upload.data.length,
+            mime: upload.type.mime,
+            data: upload.data
+    });
+        upload.fileName = fileName;
+        upload.urls = [fileName];
+        return upload;
+    }
 
     async uploadPartWithS3(storage, upload: Upload) {
         const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;

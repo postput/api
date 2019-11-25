@@ -9,6 +9,7 @@ import {OperationService} from "../operation/service";
 import * as request from 'request';
 import {merge, isEmpty} from 'lodash';
 import {join} from 'path';
+import * as B2 from 'backblaze-b2';
 
 export class DownloadService{
 
@@ -80,6 +81,9 @@ export class DownloadService{
                 break;
             case 'proxy':
                 return this.downloadFromURL(storage, req);
+                break;
+            case 'backblaze':
+                return this.downloadWithBackblaze(storage, req);
                 break;
         }
     }
@@ -154,6 +158,22 @@ export class DownloadService{
 
     async downloadFromScaleway(storage, req){
         return this.downloadWithS3(storage.config, req);
+    }
+
+    async downloadWithBackblaze(storage, req) {
+        const path = req.path.substr(req.path.indexOf('/') + 1);
+        const file = path.substr(path.indexOf('/') + 1);
+        const customConfig = storage.config.custom;
+        const b2 = new B2(customConfig);
+        await b2.authorize();
+        const response = await b2.downloadFileByName({
+            bucketName: customConfig.bucketName,
+            fileName: file,
+            responseType: 'stream'
+        });
+        const download = new Download();
+        download.data = response.data;
+        return download;
     }
 
     async downloadWithPkgCloud(storage, req){

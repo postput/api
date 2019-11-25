@@ -50,7 +50,7 @@ export class OperationService {
     async applyOperation(operation, query, stream: any){
 
         let buffer;
-        const value = operation.value || undefined;
+        let value = operation.value || undefined;
         switch (operation.key) {
             case 'rotate':
                 return sharp().rotate(value);
@@ -109,8 +109,10 @@ export class OperationService {
                 const webPQuality = parseInt(query.webPQuality);
 
             case 'resize':
-                let values = value.split(',');
-                return sharp().resize(parseInt(values[0]), parseInt(values[1]));
+                value = value.toString();
+                let values = value.split(',').map(val => parseInt(val));
+                //@ts-ignore
+                return sharp().resize(...values);
                 break;
             case 'face':
                 const tmp = tmpdir() +'/'+ uuid();

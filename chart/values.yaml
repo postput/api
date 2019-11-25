@@ -6,16 +6,23 @@ replicaCount: 1
 
 imageOverride:
 image:
-  repository: registry.gitlab.com/arnadus/asset
+  repository: postput/api
   tag: latest
   pullPolicy: Always
-  pullSecrets:
-    - name: gitlab
+  pullSecrets: []
+#  - mysecret
 
-env:
-  - name: OBJECT_STORAGE_PROVIDER
-    value: openstack
 
+postgresql:
+  enabled: true
+  fullnameOverride: &postgresqlHostname postgresql-postput
+  persistence:
+    enabled: false
+  global:
+    postgresql:
+      postgresqlDatabase: &postgresqlDatabase postput
+      postgresqlUsername: &postgresqlUsername postput
+      postgresqlPassword: &postgresqlPassword postput
 
 nameOverride: ""
 fullnameOverride: ""
@@ -36,6 +43,59 @@ ingress:
     - secretName: postputcom-tls
       hosts:
         - api.postput.com
+
+env:
+  # Postgresql related env
+  - name: POSTGRESQL_HOST
+    value: *postgresqlHostname
+  - name: POSTGRESQL_PORT
+    value: 5432
+  - name: POSTGRESQL_DATABASE
+    value: *postgresqlDatabase
+  - name: POSTGRESQL_USERNAME
+    value: *postgresqlUsername
+  - name: POSTGRESQL_PASSWORD
+    value: *postgresqlPassword
+
+  # Sequelize related env
+  - name: SEQUELIZE_FORCE_SYNC
+    value: true
+
+  # Application related env
+  - name: LISTEN_PORT
+    value: 3000
+  - name: MAX_UPLOAD_SIZE
+    value: 100mb
+  - name: URLS
+    value: ['"http://changeme.com"']
+
+
+
+
+storages: >
+  [
+    {
+      "model": "Storage",
+      "data": {
+        "name": "my_backblaze_files",
+        "uuid": "c9ba4b53-41fa-483f-9f79-e8bc8a66dd06",
+        "typeId": 11,
+        "config": {
+          "custom": {
+            "applicationKeyId": "qsd5f46qs54fd654q6sdf46q5s",
+            "applicationKey": "fq6sd5f65q4sg654sf6g54sfd65g4s6",
+            "bucketName": "mybucketname",
+            "bucketId": "sqd6f56sqd4f65s4df654sq6fd4"
+          },
+          "allowUpload": true,
+          "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+        },
+        "data": {}
+      }
+    }
+  ]
+
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

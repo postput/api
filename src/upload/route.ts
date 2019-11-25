@@ -1,5 +1,7 @@
 import {Application} from "express";
 import {UploadController} from "./controller";
+import {json, raw, text, urlencoded} from 'body-parser';
+
 export class UploadRoute {
 
     public uploadController: UploadController = new UploadController();

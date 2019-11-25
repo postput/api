@@ -6,3 +6,4 @@ secret/*
 !secret/.gitkeep
 data/storage/*
 !data/storage/default.json
+!data/storage/custom.json.dist
