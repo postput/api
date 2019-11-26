@@ -21,6 +21,15 @@ spec:
     spec:
       imagePullSecrets:
 {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      initContainers:
+        - name: wait-postgresql
+          image: willwill/wait-for-it
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+          command: ['/wait-for-it.sh', '$(POSTGRESQL_HOST):$(POSTGRESQL_PORT)', '-t', '0', '--', 'echo', '$(POSTGRESQL_HOST):$(POSTGRESQL_PORT) is up and running' ]
       containers:
         - name: {{ .Chart.Name }}
           image: {{ include "postput.image" . }}
@@ -35,10 +44,18 @@ spec:
               containerPort: 3000
               protocol: TCP
           livenessProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 10
+            failureThreshold: 2
             httpGet:
               path: /healthz
               port: http
           readinessProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 10
+            failureThreshold: 2
             httpGet:
               path: /healthz
               port: http

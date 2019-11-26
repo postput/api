@@ -31,7 +31,7 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 3000
-  #nodePort: 33333
+#  nodePort: 33333
 
 ingress:
   enabled: false
@@ -96,8 +96,6 @@ customStorages: >
       }
     }
   ]
-
-
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
