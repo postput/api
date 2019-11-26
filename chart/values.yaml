@@ -6,6 +6,7 @@ replicaCount: 1
 
 imageOverride:
 image:
+  registry:
   repository: postput/api
   tag: latest
   pullPolicy: Always
@@ -38,12 +39,12 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: api.postput.com
+    - host: www.yourdomain.com
       paths: ["/"]
   tls:
-    - secretName: postputcom-tls
+    - secretName: your-secret-name-tls
       hosts:
-        - api.postput.com
+        - www.yourdomain.com
 
 env:
   # Postgresql related env
@@ -73,7 +74,7 @@ env:
 
 customStoragesMountPath: /opt/app/data/storage/custom
 
-storages: >
+customStorages: >
   [
     {
       "model": "Storage",

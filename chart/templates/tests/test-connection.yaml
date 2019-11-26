@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "postput-api.fullname" . }}-test-connection"
+  name: "{{ include "postput.fullname" . }}-test-connection"
   labels:
-    app.kubernetes.io/name: {{ include "postput-api.name" . }}
-    helm.sh/chart: {{ include "postput-api.chart" . }}
+    app.kubernetes.io/name: {{ include "postput.name" . }}
+    helm.sh/chart: {{ include "postput.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
@@ -14,5 +14,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "postput-api.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "postput.fullname" . }}:{{ .Values.service.port }}/healthz']
   restartPolicy: Never

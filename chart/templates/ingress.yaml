@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "postput-api.fullname" . -}}
+{{- $fullName := include "postput.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "postput-api.name" . }}
-    helm.sh/chart: {{ include "postput-api.chart" . }}
+    app.kubernetes.io/name: {{ include "postput.name" . }}
+    helm.sh/chart: {{ include "postput.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   {{- with .Values.ingress.annotations }}

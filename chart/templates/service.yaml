@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "postput-api.fullname" . }}
+  name: {{ include "postput.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "postput-api.name" . }}
-    helm.sh/chart: {{ include "postput-api.chart" . }}
+    app.kubernetes.io/name: {{ include "postput.name" . }}
+    helm.sh/chart: {{ include "postput.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
@@ -18,5 +18,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "postput-api.name" . }}
+    app.kubernetes.io/name: {{ include "postput.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
