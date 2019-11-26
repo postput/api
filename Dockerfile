@@ -1,4 +1,4 @@
-FROM node:12-stretch
+FROM node:12-stretch-slim
 
 ENV FFMPEG_VERSION=4.2.1 \
     LISTENING_PORT=3000 \

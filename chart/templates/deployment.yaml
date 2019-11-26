@@ -43,14 +43,15 @@ spec:
               path: /healthz
               port: http
           volumeMounts:
-            - name: extra-storages
-              mountPath: "/opt/app/data/storage/"
+            - name: custom-storages
+              mountPath: {{ .Values.customStoragesMountPath }}/custom-storages.json
+              subPath: custom-storages.json
               readOnly: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         {{- if .Values.storages }}
-        - name: extra-storages
+        - name: custom-storages
           secret:
             secretName: {{ template "postput-api.fullname" . }}
         {{- end }}
