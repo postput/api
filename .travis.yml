@@ -17,6 +17,8 @@ env:
   POSTGRESQL_HOST: localhost
   global:
   - PGPORT=5432
+  - CC_TEST_REPORTER_ID=ABC123
+
 services:
 - postgresql
 
