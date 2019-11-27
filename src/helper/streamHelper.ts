@@ -10,20 +10,4 @@ export class StreamHelper{
         return stream;
     }
 
-    static async toBuffer(stream){
-        let buffer = [];
-        for await (let chunk of stream) {
-            buffer.push(chunk);
-        }
-        return Buffer.concat(buffer);
-    }
-
-    static toBufferSync(stream){
-        let buffer = [];
-        for (let chunk of stream) {
-            buffer.push(chunk);
-        }
-        return Buffer.concat(buffer);
-    }
-
 }

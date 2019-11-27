@@ -15,8 +15,7 @@ import {UploadRoute} from "./upload/route";
 import {StorageService} from "./storage/service";
 import appConfig from "./config/app";
 const cors = require('cors');
-const boolParser = require('express-query-boolean');
-const intParser = require('express-query-int');
+
 
 
 export default class App {
@@ -82,8 +81,6 @@ export default class App {
         await StorageService.instance.init();
         Logger.log('database created');
         this.express.use(cors());
-        this.express.use(boolParser());
-        this.express.use(intParser());
 
         return this;
     }

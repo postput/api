@@ -10,6 +10,7 @@ import * as request from 'request';
 import {merge, isEmpty} from 'lodash';
 import {join} from 'path';
 import * as B2 from 'backblaze-b2';
+import {resolve} from 'url';
 
 export class DownloadService{
 
@@ -121,7 +122,7 @@ export class DownloadService{
             customConfig.qs = customConfig.qs || {};
             customConfig.qs = merge(customConfig.qs, req.query);
         }
-        customConfig.uri  = join(customConfig.uri, file);
+        customConfig.uri  = resolve(customConfig.uri, file);
         customConfig.resolveWithFullResponse= true;
         const download = new Download();
         download.data = await request(customConfig);

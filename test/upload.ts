@@ -1,6 +1,6 @@
-import app from "../../src/app";
+import app from "../src/app";
 import {deserialize} from "serializr";
-import {Upload} from "../../src/upload/model";
+import {Upload} from "../src/upload/model";
 import {expect} from "chai";
 import * as request from 'supertest';
 import {join} from 'path';
@@ -20,14 +20,14 @@ export class UploadServiceTest {
         return UploadServiceTest.pInstance;
     }
 
-    async singleUpload (storage, filePath, nameOverride) {
+    async singleUpload(storage, filePath, nameOverride) {
         const response = await request(app.instance.express)
             .post('/'+ storage.name +'?name-override='+ nameOverride)
             .attach('avatar', filePath)
             .expect('content-type', /json/)
             .expect(200);
         const uploads = deserialize(Upload, response.body);
-        const upload = uploads[0];
+        const upload : Upload = uploads[0];
         expect(upload.fieldName).to.equal('avatar');
         expect(upload.fileName).to.equal(nameOverride);
         expect(upload.nameOverride).to.equal(nameOverride);
@@ -35,9 +35,22 @@ export class UploadServiceTest {
         return upload;
     }
 
-    async download (storage, fileName) {
+    async download (storage, fileName, queryString?) {
+        let fullUrl = join('/', storage.name, fileName);
+        if(queryString){
+            fullUrl += '?' +queryString;
+        }
         const response = await request(app.instance.express)
-            .get('/'+ join(storage.name, fileName))
+            .get(fullUrl)
+            .expect(200);
+        return response;
+    }
+
+    async downloadUrl (storage, url) {
+
+        const fullURL = join('/', storage.name ) + '?url='+ encodeURI(url);
+        const response = await request(app.instance.express)
+            .get(fullURL)
             .expect(200);
         return response;
     }
