@@ -19,17 +19,24 @@ env:
   - PGPORT=5432
 services:
 - postgresql
-script:
-- npm run coverage
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_6d737e3f8fdd_key -iv $encrypted_6d737e3f8fdd_iv
     -in custom.json.enc -out data/storage/custom/custom.json -d
 
 before_script:
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
 - psql -c 'create database postput;' -U postgres
 - npm install
-- npm install -g codeclimate-test-reporter
+- ./cc-test-reporter before-build
+
+script:
+  - npm run coverage
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
 after_success:
 - istanbul cover _mocha -- -R spec ./test/*.js
 - codeclimate < ./coverage/lcov.info
