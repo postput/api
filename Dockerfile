@@ -14,7 +14,7 @@ ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.1
 WORKDIR /opt/app
 
 COPY package*.json ./
-
+COPY bin bin
 RUN npm install --production && ./bin/node-prune
 
 COPY . .
