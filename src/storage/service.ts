@@ -118,7 +118,7 @@ export class StorageService {
         return StorageRepository.instance.fetchByNameOrDefault(name);
     }
     
-    async findAllStorage() {
+    findAllStorage() {
         return StorageRepository.instance.fetchAllStorage();
     }
 

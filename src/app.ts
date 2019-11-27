@@ -13,6 +13,7 @@ import {DownloadController} from "./download/controller";
 import {DownloadRoute} from "./download/route";
 import {UploadRoute} from "./upload/route";
 import {StorageService} from "./storage/service";
+import appConfig from "./config/app";
 const cors = require('cors');
 const boolParser = require('express-query-boolean');
 const intParser = require('express-query-int');
@@ -21,6 +22,7 @@ const intParser = require('express-query-int');
 export default class App {
 
     private static appInstance: App;
+    public server;
 
     static get instance() : App {
         return App.getInstance();
@@ -33,8 +35,6 @@ export default class App {
     public uploadRoute = new UploadRoute();
 
     private constructor(){
-
-        this.config();
         this.healthCheckRoute.routes(this.express);
         this.downloadRoute.routes(this.express);
         this.uploadRoute.routes(this.express);
@@ -68,8 +68,7 @@ export default class App {
         return App.appInstance;
     }
 
-    private config(): void{
-
+    async init(){
         process.on('uncaughtException', function(err) {
             Logger.error(err);
         });
@@ -77,16 +76,21 @@ export default class App {
             Logger.error(err);
         });
 
-
         this.express.use(morgan('combined', { stream: {write: Logger.morganLog} }));
-        SequelizeBuilder.sequelize.sync({ force: sequelizeConfig.forceSync }).then(async (s) => {
-            await Fixtures.load();
-            await StorageService.instance.init();
-            Logger.log('database created');
-        });
-
+        await SequelizeBuilder.sequelize.sync({ force: sequelizeConfig.forceSync });
+        await Fixtures.load();
+        await StorageService.instance.init();
+        Logger.log('database created');
         this.express.use(cors());
         this.express.use(boolParser());
         this.express.use(intParser());
+
+        return this;
     }
+
+    async run(){
+        await this.init();
+        this.server = this.express.listen(appConfig.listen_port, () => console.log("Server running on "+ appConfig.listen_port +"!"));
+    }
+
 }

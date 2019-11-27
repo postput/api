@@ -1,0 +1,37 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+    - "node_modules"
+
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
+
+env:
+  CODECLIMATE_REPO_TOKEN: dd47f2de1879cb2e4cbffe5310d925da9a088fd7a76c1e6443075659412b5dba
+  POSTGRESQL_USERNAME: postgres
+  POSTGRESQL_PASSWORD:
+  POSTGRESQL_HOST: postgresql
+  global:
+    - PGPORT=5433
+
+services:
+  - postgresql
+
+script:
+  - npm test
+
+before_script:
+  - psql -c 'create database postput;' -U postgres
+  - npm install -g istanbul
+  - npm install -g mocha
+  - npm install -g codeclimate-test-reporter
+
+after_success:
+  - istanbul cover _mocha -- -R spec ./test/*.js
+  - codeclimate < ./coverage/lcov.info

@@ -263,12 +263,13 @@ export class UploadService {
                 reject(error);
             });
 
+            /*
             filesystemStream.on('end', () => {
                 resolve(upload);
             });
             filesystemStream.on('close', () => {
                 resolve(upload);
-            });
+            });*/
             filesystemStream.pipe(writeStream);
         });
     }

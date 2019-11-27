@@ -51,7 +51,7 @@ export class StorageRepository{
         return Storage.findOne({ where: { uuid: uuid }, include:[{model: StorageType, required: true}]});
     }
 
-    async fetchAllStorage(){
+    fetchAllStorage(){
         return Storage.findAll({include:[{model: StorageType, required: true}]});
     }
 
