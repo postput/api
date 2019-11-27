@@ -1,6 +1,6 @@
 {
-  "name": "node-assets-server",
-  "version": "0.0.1",
+  "name": "postput-api",
+  "version": "1.0.0",
   "scripts": {
     "start": "ts-node src/server.ts",
     "debug": "ts-node-dev src/server.ts",
