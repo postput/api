@@ -15,7 +15,7 @@ WORKDIR /opt/app
 
 COPY package*.json ./
 
-RUN npm install--production && ./bin/node-prune
+RUN npm install --production && ./bin/node-prune
 
 COPY . .
 
