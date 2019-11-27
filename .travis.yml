@@ -11,13 +11,13 @@ addons:
     - postgresql-10
     - postgresql-client-10
 env:
-  CODECLIMATE_REPO_TOKEN: dd47f2de1879cb2e4cbffe5310d925da9a088fd7a76c1e6443075659412b5dba
   POSTGRESQL_USERNAME: postgres
   POSTGRESQL_PASSWORD: 
   POSTGRESQL_HOST: localhost
   global:
   - PGPORT=5432
   - CC_TEST_REPORTER_ID=ABC123
+  - CODECLIMATE_REPO_TOKEN=dd47f2de1879cb2e4cbffe5310d925da9a088fd7a76c1e6443075659412b5dba
 
 services:
 - postgresql
