@@ -9,14 +9,11 @@
   },
   "dependencies": {
     "@hapi/boom": "^7.4.2",
-    "@types/lodash": "^4.14.145",
-    "@types/memoizee": "^0.4.3",
-    "@types/mime-types": "^2.1.0",
-    "@types/pkgcloud": "^1.7.3",
-    "@types/request-promise": "^4.1.44",
-    "@types/sharp": "^0.23.0",
+    "@types/bluebird": "^3.5.29",
+    "@types/node": "^12.12.14",
+    "@types/sequelize": "^4.28.8",
     "@types/uuid": "^3.4.6",
-    "@typescript-plus/fast-memoize-decorator": "^0.1.0",
+    "@types/validator": "^12.0.1",
     "Blob": "^0.10.0",
     "aws-sdk": "^2.571.0",
     "backblaze-b2": "^1.5.0",
@@ -56,13 +53,22 @@
     "sequelize-typescript": "^0.6.7",
     "serializr": "^1.5.3",
     "sharp": "^0.23.2",
+    "ts-node": "^8.0.2",
     "ts-optchain": "^0.1.8",
+    "typescript": "^3.3.3",
     "uuid": "^3.3.3",
     "validator": "^12.0.0",
     "winston": "^3.2.1"
   },
   "optionalDependencies": {},
   "devDependencies": {
+    "@types/lodash": "^4.14.145",
+    "@types/memoizee": "^0.4.3",
+    "@types/mime-types": "^2.1.0",
+    "@types/pkgcloud": "^1.7.3",
+    "@types/request-promise": "^4.1.44",
+    "@types/sharp": "^0.23.0",
+    "@typescript-plus/fast-memoize-decorator": "^0.1.0",
     "@types/supertest": "^2.0.8",
     "@types/chai": "^4.2.5",
     "@types/express": "^4.16.1",
@@ -71,8 +77,6 @@
     "mocha": "^6.2.2",
     "nyc": "15.0.0-beta.1",
     "supertest": "^4.0.2",
-    "ts-node": "^8.0.2",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "typescript": "^3.3.3"
+    "ts-node-dev": "^1.0.0-pre.44"
   }
 }

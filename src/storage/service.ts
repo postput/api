@@ -99,7 +99,7 @@ export class StorageService {
         const pathFragments = request.path.split('/');
         const firstPart = pathFragments[1];
         if (firstPart) {
-            if (isUUID(firstPart)) {
+            if (isUUID.default(firstPart)) {
                 return this.findByUUID(request.query.storageId);
             }
         }
