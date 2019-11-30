@@ -20,6 +20,8 @@ import * as bytes from 'bytes';
 import {query} from "winston";
 import * as B2 from 'backblaze-b2';
 import {merge} from 'lodash';
+import {WebhookService} from "../webhook/service";
+import Logger from "../logger";
 
 export class UploadService {
 
@@ -66,8 +68,15 @@ export class UploadService {
             uploads.forEach(upload => {
                 upload.urls = URLHelper.getUrls(storage, upload);
             });
+            const a = await WebhookService.instance.send(storage, req);
+            console.log(a);
+            /*
+            .then(calls => {
+                Logger.log(calls.toString());
+            }).catch(error => {
+                Logger.error(error)
+            });*/
             res.json(serialize(uploads)).end();
-
     }
 
     async postURL(req, res){

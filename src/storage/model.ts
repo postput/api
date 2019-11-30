@@ -3,13 +3,14 @@ import {
     AutoIncrement, BelongsTo,
     Column, CreatedAt,
     DataType, DeletedAt,
-    ForeignKey,
+    ForeignKey, HasMany,
     IsUUID,
     Model,
     PrimaryKey, Table,
     Unique, UpdatedAt
 } from "sequelize-typescript";
-import {date, identifier, object, serializable} from "serializr";
+import {date, identifier, list, object, serializable} from "serializr";
+import {Webhook} from "../webhook/model";
 
 @Table
 export class StorageType extends Model<StorageType>{
@@ -67,6 +68,10 @@ export class Storage extends Model<Storage>{
         comment: 'uuid for storage',
     })
     uuid: string;
+
+    @serializable(list(object(Webhook)))
+    @HasMany(() => Webhook)
+    webhooks: Webhook[];
 
     @serializable
     @Unique

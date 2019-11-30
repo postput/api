@@ -1,5 +1,6 @@
 import {Storage, StorageType} from './model'
 import {Op, or} from "sequelize";
+import {Webhook, WebhookType} from "../webhook/model";
 
 
 export class StorageRepository{
@@ -18,15 +19,15 @@ export class StorageRepository{
     }
 
     async fetchByNameOrUUID(string: string){
-        return Storage.findOne({ where: { [Op.or]: [ {name: string, uuid: string} ] }, include:[{model: StorageType, required: true}]});
+        return Storage.findOne({ where: { [Op.or]: [ {name: string, uuid: string} ] }, include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }
 
     async fetchDefault(){
-        return Storage.findOne({ where: { isDefault: true }, include:[{model: StorageType, required: true}]});
+        return Storage.findOne({ where: { isDefault: true }, include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }
 
     async fetchFirst(){
-        return Storage.findOne({ order: [['id','ASC']], include:[{model: StorageType, required: true}]});
+        return Storage.findOne({ order: [['id','ASC']], include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }
 
     async fetchByNameOrDefault(name: string){
@@ -44,11 +45,11 @@ export class StorageRepository{
     }
 
     async fetchByName(name: string){
-        return Storage.findOne({ where: { name: name }, include:[{model: StorageType, required: true}]});
+        return Storage.findOne({ where: { name: name }, include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }
 
     async fetchByUUID(uuid: string){
-        return Storage.findOne({ where: { uuid: uuid }, include:[{model: StorageType, required: true}]});
+        return Storage.findOne({ where: { uuid: uuid }, include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }
 
     fetchAllStorage(){
