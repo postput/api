@@ -1,4 +1,4 @@
-# Drupal
+# Postput
 
 [Postput](https://github.com/postput/postput) is a cloud native storage operator - Upload, download and perform on-the-fly operations on your files
 
