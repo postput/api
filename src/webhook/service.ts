@@ -1,6 +1,7 @@
 import {Storage} from '../storage/model'
 import {isEmpty, merge} from "lodash";
 import * as request from "request-promise";
+import Logger from "../logger";
 
 export class WebhookService {
 
@@ -30,7 +31,11 @@ export class WebhookService {
                             let opts : any = webhookType.config.opts;
                             opts = merge(opts, webhook.config.opts);
                             opts.uri = url;
-                            calls.push(request(opts));
+                            calls.push(request(opts).catch(error => {
+                                Logger.error('The webhook named "'+ webhook.name +'" failed. Please read error below to have more hints on the error.');
+                                Logger.error('Following config was computed for the failing webhook: '+ JSON.stringify(opts));
+                                Logger.error(error);
+                            }));
                         }
                     });
                 });

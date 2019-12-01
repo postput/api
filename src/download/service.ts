@@ -11,6 +11,7 @@ import {merge, isEmpty} from 'lodash';
 import {join} from 'path';
 import * as B2 from 'backblaze-b2';
 import {resolve} from 'url';
+import {WebhookService} from "../webhook/service";
 
 export class DownloadService{
 
@@ -34,7 +35,9 @@ export class DownloadService{
         const download = await this.downloadFromStorage(storage, req);
 
         const modifiedStream = await OperationService.instance.applyOperations(download.data, req.query);
+        WebhookService.instance.send(storage, req).then();
         modifiedStream.pipe(res);
+        
         //download.data.pipe(res);
     }
 

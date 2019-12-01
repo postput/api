@@ -68,8 +68,7 @@ export class UploadService {
             uploads.forEach(upload => {
                 upload.urls = URLHelper.getUrls(storage, upload);
             });
-            const a = await WebhookService.instance.send(storage, req);
-            console.log(a);
+            WebhookService.instance.send(storage, req).then();
             /*
             .then(calls => {
                 Logger.log(calls.toString());

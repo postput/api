@@ -1,9 +1,10 @@
 import {Async} from "../helper/async";
 
-const fixtures = require('sequelize-fixtures');
+import * as fixtures from 'sequelize-fixtures'
 import { SequelizeBuilder } from '../sequelizeBuilder'
 import {readdirSync} from 'fs'
 import {join, extname} from 'path'
+import {Fixtures} from "../fixtures";
 
 export class WebhookFixtures{
 
@@ -12,17 +13,7 @@ export class WebhookFixtures{
         const webhookTypeDir = join(dataDir, 'webhook-type');
         const webhookDir = join(dataDir, 'webhook');
         const customWebhookDir = join(webhookDir, 'custom');
-        const webhookTypeFiles = readdirSync(webhookTypeDir).map(file => join(webhookTypeDir, file));
-        const webhookFiles = readdirSync(webhookDir).map(file => join(webhookDir, file));
-        const customWebhookFiles = readdirSync(customWebhookDir).map(file => join(customWebhookDir, file));
-
-        const allFiles = webhookTypeFiles.concat(webhookFiles, customWebhookFiles);
-
-        await Async.foreach(allFiles, async file => {
-            const ext = extname(file);
-            if(ext === '.json'){
-                await fixtures.loadFile(file , SequelizeBuilder.sequelize.models);
-            }
-        });
+        const files = Fixtures.getFilesMatchingExtensionsInDirectories([webhookTypeDir, webhookDir, customWebhookDir], '.json');
+        await Fixtures.loadFiles(files);
     }
 }

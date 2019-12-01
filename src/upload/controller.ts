@@ -10,6 +10,4 @@ export class UploadController {
     async put(req, res, next) {
         return UploadService.instance.post(req, res);
     }
-
-
 }

@@ -8,7 +8,7 @@
       "description": "this webhook will be triggered every time a post request is issued to this storage",
       "token": "a4323a53-ce3c-4d7f-91f4-545d8ce44354",
       "config": {
-        "urls": ["https://www.your-backend.com:33548/post/endpoint", "https://www.your-backend.com:33549/post/endpoint"],
+        "urls": ["http://localhost:1999/test", "http://localhost:1222/test2"],
         "includeBody": true,
         "opts": {
           "qs": {"my-custom-querystring": "my-custom-value"},
@@ -27,7 +27,7 @@
       "description": "A webhook that will be triggered every time a get request is issued to that storage.",
       "token": "9a031f81-8f40-4824-909a-6a9841e284ca",
       "config": {
-        "urls": ["https://www.your-backend.com:2000/post/endpoint", "https://www.your-backend.com:2000/post/endpoint"],
+        "urls": ["http://localhost:1999/test"],
         "includeBody": true,
         "opts": {
           "qs": {"my-custom-querystring": "my-custom-value"},
