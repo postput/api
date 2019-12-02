@@ -67,12 +67,12 @@ The following table lists the configurable parameters of the postput chart and t
 | `ingress.hosts[0].paths[0]`       | Path within the url structure              | `["/"]`                                                       |
 | `ingress.tls[0].secretName`       | Utilize TLS backend in ingress             | `your-secret-name-tls`                                                   |
 | `ingress.tls[0].hosts[0]`         | Hostname managed by this `secretName`           | `["www.yourdomain.com"]`                                                   |
-| `postgresql.enabled`           | Existing username in the external db       | `bn_drupal`                                               |
+| `postgresql.enabled`           | Existing username in the external db       | `true`                                               |
 | `postgresql.fullnameOverride`       | Password for the above username            | `nil`                                                     |
-| `postgresql.persistence.enabled`       | Name of the existing database              | `bitnami_drupal`                                          |
-| `postgresql.global.postgresql.postgresqlDatabase`                 | Whether to use the MariaDB chart           | `true`                                                    |
-| `postgresql.global.postgresql.postgresqlUsername`                 | Whether to use the MariaDB chart           | `true`                                                    |
-| `postgresql.global.postgresql.postgresqlPassword`                 | Whether to use the MariaDB chart           | `true`                                                    |
+| `postgresql.persistence.enabled`       | Enable persistence using PVC              | `true`                                          |
+| `postgresql.global.postgresql.postgresqlDatabase`                 | Database name to create          | `postput`                                                    |
+| `postgresql.global.postgresql.postgresqlUsername`                 | Database user to create           | `postput`                                                    |
+| `postgresql.global.postgresql.postgresqlPassword`                 | Password for the database           | `postput`                                                    |
 | `service.type`                    | Kubernetes Service type                    | `LoadBalancer`                                            |
 | `service.port`                    | Service HTTP port                          | `80`                                                      |
 | `service.nodePort`                | Kubernetes node port                  | `""`                                                      |
