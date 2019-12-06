@@ -1,0 +1,20 @@
+apiVersion: skaffold/v1beta6
+kind: Config
+build:
+  tagPolicy:
+    gitCommit: {}
+  artifacts:
+    - image: registry.gitlab.com/postput/api
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  helm:
+    releases:
+      - name: asset
+        chartPath: chart
+        #wait: true
+        #recreatePods: true
+        #valuesFiles:
+        #- helm-skaffold-values.yaml
+        values:
+          imageOverride: registry.gitlab.com/postput/api

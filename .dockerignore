@@ -1,0 +1,16 @@
+node_modules
+.git
+.idea
+.nyc_output
+coverage
+public/*
+!public/favicon.ico
+!public/.gitkeep
+secret/*
+!secret/.gitkeep
+data/storage/*
+!data/storage/default.json
+!data/storage/custom/custom.json.dist
+data/webhook/*
+!data/webhook/default.json
+!data/webhook/custom/.gitkeep
