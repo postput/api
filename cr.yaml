@@ -1,0 +1,5 @@
+owner: postput
+git-repo: api
+charts-repo: https://postput.github.io/api
+package-path: .deploy
+token: 448bf1c5a628b31cf3d8e7f7fcb27367c6c74db1
