@@ -66,9 +66,8 @@ export class DownloadService{
                 delete storage.config.custom['keyFile'];
                 return this.downloadWithPkgCloud(storage, req, res);
                 break;
-            case 's3':
-                storage.config.custom.provider = 'amazon';
-                return this.downloadWithPkgCloud(storage, req, res);
+            case 'S3':
+                return this.downloadWithS3(storage, req, res);
                 break;
             case 'azure':
                 storage.config.custom.provider = 'azure';
@@ -152,8 +151,10 @@ export class DownloadService{
     async downloadWithS3(storage, req, res){
         const file = req.path.substr(req.path.indexOf('/', 1) + 1);
         const customConfig = storage.config.custom;
-        const spacesEndpoint = new Endpoint(customConfig.endpoint);
-        customConfig.endpoint = spacesEndpoint;
+        if(customConfig.endpoint){
+            const s3Endpoint = new Endpoint(customConfig.endpoint);
+            customConfig.endpoint = s3Endpoint;
+        }
         const s3 = new S3(customConfig);
         var params = {
             Bucket: customConfig.bucket,
@@ -169,8 +170,10 @@ export class DownloadService{
                 res.setHeader('Content-Type', type.mime);
                 res.setHeader('Content-Length', data.ContentLength);
                 res.setHeader('Etag', data.ETag);
-                res.setHeader('Version-Id', data.VersionId);
                 res.setHeader('Last-Modified', data.LastModified);
+                if(data.VersionId) {
+                    res.setHeader('Version-Id', data.VersionId);
+                }
                 download.data = StreamHelper.fromBuffer(data.Body);
                 resolve(download);
             });

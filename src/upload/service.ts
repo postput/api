@@ -114,9 +114,8 @@ export class UploadService {
                 delete storage.config.custom['keyFile'];
                 return this.uploadWithPkgcloud(storage, req);
                 break;
-            case 's3':
-                storage.config.custom.provider = 'amazon';
-                return this.uploadWithPkgcloud(storage, req);
+            case 'S3':
+                return this.uploadWithS3(storage, req);
                 break;
             case 'azure':
                 storage.config.custom.provider = 'azure';
@@ -251,8 +250,10 @@ export class UploadService {
     async uploadPartWithS3(storage, upload: Upload) {
         const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
         const customConfig = storage.config.custom;
-        const spacesEndpoint = new Endpoint(customConfig.endpoint);
-        customConfig.endpoint = spacesEndpoint;
+        if(customConfig.endpoint){
+            const s3Endpoint = new Endpoint(customConfig.endpoint);
+            customConfig.endpoint = s3Endpoint; 
+        }
         const s3 = new S3(customConfig);
         var params = {
             Bucket: customConfig.bucket,

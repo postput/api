@@ -48,17 +48,19 @@
       "data": {}
     }
   },
+
   {
     "model": "StorageType",
     "data": {
       "id": 4,
-      "name": "s3",
+      "name": "S3",
       "config": {
         "custom": {
-          "keyId": "xxxxxxxxxxxxxxxxxxxxxx",
-          "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-          "container": "mycontainer",
-          "region": "us-xxx-1"
+          "endpoint": null,
+          "accessKeyId": "xxxxxxxxxxxxxxxxxxxxxx",
+          "secretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "bucket": "mycontainer",
+          "region": null
         },
         "allowUpload": true,
         "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
@@ -135,42 +137,6 @@
             "www.xxxxxx.xxx"
           ]
         },
-        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
-      },
-      "data": {}
-    }
-  },
-  {
-    "model": "StorageType",
-    "data": {
-      "id": 9,
-      "name": "spaces",
-      "config": {
-        "custom": {
-          "endpoint": "fra1.digitaloceanspaces.com",
-          "bucket": "yourbucket",
-          "accessKeyId": "xxxxxxxxxxxxxxxxxxxxx",
-          "secretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },
-        "allowUpload": true,
-        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
-      },
-      "data": {}
-    }
-  },
-  {
-    "model": "StorageType",
-    "data": {
-      "id": 10,
-      "name": "scaleway",
-      "config": {
-        "custom": {
-          "endpoint": "s3.fr-par.scw.cloud",
-          "bucket": "yourbucket",
-          "accessKeyId": "xxxxxxxxxxxxxxxxxxxxx",
-          "secretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },
-        "allowUpload": true,
         "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
       },
       "data": {}

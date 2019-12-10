@@ -24,8 +24,6 @@
     }
   },
 
-
-
     /*------------   AMAZON S3 CONFIGURATION    ------------------*/
   {
     "model": "Storage",
@@ -35,9 +33,9 @@
       "typeId": 4,
       "config": {
         "custom": {
-          "keyId": "AAAAAAAAAAAAAAAAAAA",
-          "key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-          "container": "my-container",
+          "accessKeyId": "AAAAAAAAAAAAAAAAAAA",
+          "secretAccessKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+          "bucket": "my-container",
           "region": "us-east-1"
         },
         "allowUpload": true,
@@ -133,7 +131,7 @@
     "data": {
       "name": "my_spaces_files",
       "uuid": "c2ba4b53-41fa-483f-9f79-e8bc8a66dd10",
-      "typeId": 9,
+      "typeId": 4,
       "config": {
         "custom": {
           "endpoint": "fra1.digitaloceanspaces.com",
@@ -155,7 +153,7 @@
     "data": {
       "name": "my_scaleway_files",
       "uuid": "56ee590f-ac82-4413-8747-736ec63814e8",
-      "typeId": 10,
+      "typeId": 4,
       "config": {
         "custom": {
           "endpoint": "s3.fr-par.scw.cloud",
