@@ -140,6 +140,17 @@ export class OperationService {
                 });
                 return download.data.pipe(sharpFilter);
                 break;
+            case 'crop':
+                const cropLeft = req.query['crop-left'] || 0;
+                const cropTop = req.query['crop-top'] || 0;
+                const cropWidth = req.query['crop-width'] || 0;
+                const cropHeight = req.query['crop-height'] || 0;
+                sharpFilter = sharp().extract({ left: cropLeft, top: cropTop, width: cropWidth, height: cropHeight });
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
             case 'mask':
 
                 switch(value) {
