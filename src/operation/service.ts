@@ -65,8 +65,11 @@ export class OperationService {
     async applyOperation(operation, req, download: Download, res){
 
         let buffer;
-        let value = operation.value || undefined;
+        let value = operation.value;
         let sharpFilter;
+        let ft;
+        let values;
+        let metadata;
 
         switch (operation.key) {
             case 'rotate':
@@ -85,19 +88,90 @@ export class OperationService {
                 });
                 return download.data.pipe(sharpFilter);
                 break;
+            case 'brightness':
+                sharpFilter = sharp().modulate({brightness: value}
+                );
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'saturation':
+                sharpFilter = sharp().modulate({saturation: value}
+                );
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'hue':
+                sharpFilter = sharp().modulate({hue: value}
+                );
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'flip-y':
+                sharpFilter = sharp().flip(value);
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'flip-x':
+                sharpFilter = sharp().flop(value);
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'negate':
+                sharpFilter = sharp().negate();
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'gamma':
+                sharpFilter = sharp().gamma(value);
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('content-length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
             case 'mask':
 
                 switch(value) {
                     case 'elipse' :
+                        buffer = await StreamHelper.toBuffer(download.data);
 
-                        buffer = await download.data.toBuffer();
-                        const metadata = await sharp(buffer).metadata();
-                        const roundedCorners = Buffer.from(
+                        metadata = await sharp(buffer).metadata();
+                        const elipse = Buffer.from(
                             '<svg><rect x="0" y="0" width="'+ metadata.width +'" height="'+ metadata.height +'" rx="'+ metadata.width/2 +'" ry="'+ metadata.height/2 +'"/></svg>'
                         );
+                        sharpFilter = sharp(buffer).composite([{
+                            input: elipse,
+                            //@ts-ignore
+                            blend: 'dest-in',
+                            cutout: true
+                        }]).webp();
 
-                        sharpFilter = sharp().composite([{
-                            input: roundedCorners,
+                        sharpFilter.on('info', (info) =>{
+                            res.setHeader('content-length', info.size);
+                        });
+                        return download.data.pipe(sharpFilter);
+                        break;
+                    case 'corner' :
+                        buffer = await StreamHelper.toBuffer(download.data);
+                        metadata = await sharp(buffer).metadata();
+                        const radius = req.query['corner-radius'] || metadata.width/10 ;
+                        const corner = Buffer.from(
+                            '<svg><rect x="0" y="0" width="'+ metadata.width +'" height="'+ metadata.height +'"  rx="'+ radius +'" ry="'+ radius +'"/></svg>'
+                        );
+
+                        sharpFilter = sharp(buffer).composite([{
+                            input: corner,
                             //@ts-ignore
                             blend: 'dest-in',
                             cutout: true
@@ -146,7 +220,7 @@ export class OperationService {
 
             case 'resize':
                 value = value.toString();
-                let values = value.split(',').map(val => parseInt(val));
+                values = value.split(',').map(val => parseInt(val));
 
                 sharpFilter = sharp().resize(...values);
                 sharpFilter.on('info', (info) =>{
@@ -156,11 +230,25 @@ export class OperationService {
                 });
                 return download.data.pipe(sharpFilter);
                 break;
+            case 'resize-video':
+                value = value.toString();
+                values = value.split(',').map(val => parseInt(val));
+                buffer = await StreamHelper.toBuffer(download.data);
+                ft = FormHelper.guessFileType(buffer, req.path);
+                return FFMPEGHelper.resize(buffer, ft.ext, {resize : value}, res);
+                break;
+            case 'crop-video':
+                value = value.toString();
+                values = value.split(',').map(val => parseInt(val));
+                buffer = await StreamHelper.toBuffer(download.data);
+                ft = FormHelper.guessFileType(buffer, req.path);
+                return FFMPEGHelper.crop(buffer, ft.ext, {crop : value}, res);
+                break;
             case 'extract':
                 value = value.toString();
                 let extractValues = value.split(',').map(val => parseInt(val));
                 buffer = await StreamHelper.toBuffer(download.data);
-                const ft = FormHelper.guessFileType(buffer, req.path);
+                ft = FormHelper.guessFileType(buffer, req.path);
                 return FFMPEGHelper.extract(buffer, ft.ext, {start : extractValues[0], duration: extractValues[1]}, res);
                 break;
             case 'face':

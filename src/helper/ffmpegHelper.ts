@@ -10,17 +10,14 @@ import Logger from "../logger";
 
 export class FFMPEGHelper{
 
-    static async extract(buffer, extension, params, res){
+    static async run(buffer, extension, res, fct){
         const identifier = v4();
         let inputIdentifier = join(tmpdir(), identifier + '-input.'+ extension);
         let outputIdentifier = join(tmpdir(), identifier + '-output.'+ extension);
         writeFileSync(inputIdentifier, buffer);
         return new Promise<any>(async (resolve, reject) => {
             let ffmpegRunnable = ffmpeg(inputIdentifier);
-            ffmpegRunnable = ffmpegRunnable.seek(params.start);
-            if(params.duration){
-                ffmpegRunnable = ffmpegRunnable.duration(params.duration);
-            }
+            ffmpegRunnable = fct(ffmpegRunnable);
             ffmpegRunnable = ffmpegRunnable.output(outputIdentifier);
             ffmpegRunnable
                 .on('error', function(err) {
@@ -48,4 +45,30 @@ export class FFMPEGHelper{
         });
     }
 
+    static async extract(buffer, extension, params, res){
+        return this.run(buffer, extension, res, (runnable) => {
+            runnable = runnable.seek(params.start);
+            if(params.duration){
+                runnable = runnable.duration(params.duration);
+            }
+            return runnable;
+        });
+    }
+
+
+    
+    static async resize(buffer, extension, params, res){
+        return this.run(buffer, extension, res, (runnable) => {
+            runnable = runnable.size(params.resize);
+            return runnable;
+        });
+    }
+
+    static async crop(buffer, extension, params, res){
+        return this.run(buffer, extension, res, (runnable) => {
+            runnable = runnable.outputOptions('-filter:v:0 crop='+ params.crop);
+            return runnable;
+        });
+    }
+    
 }
