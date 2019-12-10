@@ -25,4 +25,9 @@ describe('Upload to google cloud storage',
             const response = await UploadServiceTest.instance.download(storage, nameOverride);
         });
 
+        it('Should delete '+ nameOverride +' from Google', async function () {
+            const response = await UploadServiceTest.instance.delete(storage, nameOverride);
+        });
+
+        
     });

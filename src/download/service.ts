@@ -1,6 +1,7 @@
 import {StorageService} from "../storage/service";
 import {Endpoint, S3} from 'aws-sdk';
 import {fs as fsm} from 'memfs';
+import * as fs from 'fs';
 import {Storage} from '../storage/model';
 import {Download} from "./model";
 import * as pkgcloud from 'pkgcloud';
@@ -17,6 +18,7 @@ import * as send from 'send';
 import Logger from "../logger";
 import * as fileType from "file-type";
 import {FormHelper} from "../helper/form";
+import sharp = require("sharp");
 
 export class DownloadService{
 
@@ -50,7 +52,7 @@ export class DownloadService{
 
         switch (storage.type.name) {
             case 'memory':
-                return this.downloadFromMemory(storage, req);
+                return this.downloadFromMemory(storage, req, res);
                 break;
             case 'filesystem':
                 return this.downloadFromFilesystem(storage, req, res);
@@ -98,12 +100,8 @@ export class DownloadService{
         }
     }
 
-    async downloadFromMemory(storage, req){
-        const path = StorageService.getPath(storage);
-        const fileName = req.path.substr(req.path.lastIndexOf('/') + 1) ;
-        const download = new Download();
-        download.data = fsm.createReadStream(join(path, fileName));
-        return download;
+    async downloadFromMemory(storage, req, res){
+        return this.downloadFromFilesystemInterface(storage, req, res, fsm);
     }
 
     async downloadFromURL(storage, req){
@@ -139,11 +137,20 @@ export class DownloadService{
     }
 
     async downloadFromFilesystem(storage, req, res){
+        return this.downloadFromFilesystemInterface(storage, req, res, fs);
+    }
+
+    async downloadFromFilesystemInterface(storage, req, res, filesystemInterface){
         const path = StorageService.getPath(storage);
         const fileName = req.path.substr(req.path.indexOf('/', 1) + 1);
         const filePath = join(path, fileName);
         const download = new Download();
-        const rs = send(req, fileName, {root: path});
+        const stat = filesystemInterface.statSync(filePath);
+        const buffer = filesystemInterface.readFileSync(filePath);
+        const ft = FormHelper.guessFileType(buffer, filePath);
+        res.set('Content-Length', stat.size);
+        res.set('Content-Type', ft.mime);
+        const rs = filesystemInterface.createReadStream(filePath);
         download.data = rs;
         return download;
     }

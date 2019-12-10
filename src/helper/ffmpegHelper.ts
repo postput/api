@@ -31,7 +31,7 @@ export class FFMPEGHelper{
                     unlink(inputIdentifier, Logger.error);
                     const stat = statSync(outputIdentifier);
 
-                    res.setHeader('content-length', stat.size);
+                    res.setHeader('Content-Length', stat.size);
                     const modifiedReadStream = createReadStream(outputIdentifier);
                     modifiedReadStream.on('start', data => {
                         console.log(data);

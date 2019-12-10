@@ -24,7 +24,7 @@ describe('Upload to Backblaze',
         it('Should download and delete '+ nameOverride +' from Backblaze', async function () {
             const response = await UploadServiceTest.instance.download(storage, nameOverride);
             const fileId = response.header['x-bz-file-id'];
-            const responseDelete = await UploadServiceTest.instance.delete(storage, nameOverride, {fileId});
+            const responseDelete = await UploadServiceTest.instance.delete(storage, nameOverride, 'fileId='+ fileId);
 
         });
 

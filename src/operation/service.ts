@@ -77,14 +77,14 @@ export class OperationService {
                 sharpFilter.on('info', (info) =>{
                     res.setHeader('X-width', info.width);
                     res.setHeader('X-height', info.height);
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
             case 'blur':
                 sharpFilter = sharp().blur(value);
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
@@ -92,7 +92,7 @@ export class OperationService {
                 sharpFilter = sharp().modulate({brightness: value}
                 );
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
@@ -100,7 +100,7 @@ export class OperationService {
                 sharpFilter = sharp().modulate({saturation: value}
                 );
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
@@ -108,35 +108,35 @@ export class OperationService {
                 sharpFilter = sharp().modulate({hue: value}
                 );
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
             case 'flip-y':
                 sharpFilter = sharp().flip(value);
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
             case 'flip-x':
                 sharpFilter = sharp().flop(value);
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
             case 'negate':
                 sharpFilter = sharp().negate();
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
             case 'gamma':
                 sharpFilter = sharp().gamma(value);
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
@@ -147,7 +147,7 @@ export class OperationService {
                 const cropHeight = req.query['crop-height'] || 0;
                 sharpFilter = sharp().extract({ left: cropLeft, top: cropTop, width: cropWidth, height: cropHeight });
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
@@ -169,7 +169,7 @@ export class OperationService {
                         }]).webp();
 
                         sharpFilter.on('info', (info) =>{
-                            res.setHeader('content-length', info.size);
+                            res.setHeader('Content-Length', info.size);
                         });
                         return download.data.pipe(sharpFilter);
                         break;
@@ -189,7 +189,7 @@ export class OperationService {
                         }]).webp();
 
                         sharpFilter.on('info', (info) =>{
-                            res.setHeader('content-length', info.size);
+                            res.setHeader('Content-Length', info.size);
                         });
                         return download.data.pipe(sharpFilter);
                         break;
@@ -224,7 +224,7 @@ export class OperationService {
                         break;
                 }
                 sharpFilter.on('info', (info) =>{
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;
@@ -237,7 +237,7 @@ export class OperationService {
                 sharpFilter.on('info', (info) =>{
                     res.setHeader('X-width', info.width);
                     res.setHeader('X-height', info.height);
-                    res.setHeader('content-length', info.size);
+                    res.setHeader('Content-Length', info.size);
                 });
                 return download.data.pipe(sharpFilter);
                 break;

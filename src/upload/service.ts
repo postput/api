@@ -42,7 +42,7 @@ export class UploadService {
 
 
     getSize(request){
-        return parseInt(request.headers['content-length']);
+        return parseInt(request.headers['Content-Length']);
     }
 
     async post(req, res) {

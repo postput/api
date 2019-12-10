@@ -4,10 +4,10 @@
     "data": {
       "id": 1,
       "name": "post",
-      "description": "A webhook that will be triggered every time a post or put request is issued to that storage.",
+      "description": "A webhook that will be triggered every time a post request is issued to that storage.",
       "config": {
         "includeBody": false,
-        "triggerMethods": [ "POST", "PUT" ],
+        "triggerMethods": [ "POST" ],
         "opts": {
           "method": "POST",
           "qs": {},
@@ -22,6 +22,25 @@
     "model": "WebhookType",
     "data": {
       "id": 2,
+      "name": "put",
+      "description": "A webhook that will be triggered every time a put request is issued to that storage.",
+      "config": {
+        "includeBody": false,
+        "triggerMethods": [ "POST" ],
+        "opts": {
+          "method": "POST",
+          "qs": {},
+          "headers": {},
+          "timeout": 5000
+        }
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "WebhookType",
+    "data": {
+      "id": 3,
       "name": "get",
       "description": "A webhook that will be triggered every time a get request is issued to that storage.",
       "config": {

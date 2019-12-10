@@ -26,11 +26,11 @@ describe('Upload to filesystem',
         });
 
         it('Should download '+ nameOverride +' from filesystem with operations', async function () {
-            const response = await UploadServiceTest.instance.download(storage, nameOverride, 'resize=100,100&rotate=90&mask=elipse&blur=5&format=webp');
+             await UploadServiceTest.instance.download(storage, nameOverride, 'resize=100,100&rotate=90&mask=elipse&blur=5&format=webp');
         });
 
         it('Should download jpeg '+ nameOverride , async function () {
-            const response = await UploadServiceTest.instance.download(storage, nameOverride, 'format=jpeg');
+            await UploadServiceTest.instance.download(storage, nameOverride, 'format=jpeg');
         });
 
         it('Should download jpg '+ nameOverride , async function () {
