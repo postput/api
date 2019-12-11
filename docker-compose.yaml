@@ -12,5 +12,3 @@ services:
       SEQUELIZE_FORCE_SYNC: "true"
     ports:
       - '2000:3000'
-volumes:
-  db_data_postput: {}
