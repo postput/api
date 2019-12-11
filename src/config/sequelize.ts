@@ -1,8 +1,8 @@
-import {PostgresqlConfig, postgresqlConfig} from './postgresql'
+import {DialectConfig, dialectConfig} from './dialect'
 import { merge } from 'lodash'
 import Logger from "../logger";
-import {Env} from "../helper/env";
-export interface SequelizeConfig extends PostgresqlConfig
+
+export interface SequelizeConfig extends DialectConfig
 {
     dialect: string;
     forceSync: boolean;
@@ -21,4 +21,4 @@ if(process.env.SEQUELIZE_FORCE_SYNC){
 }
 
 
-export let sequelizeConfig : SequelizeConfig = merge(postgresqlConfig, baseConfig, envConfig);
+export let sequelizeConfig : SequelizeConfig = merge(dialectConfig, baseConfig, envConfig);

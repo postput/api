@@ -36,13 +36,13 @@ export class WebhookType extends Model<WebhookType>{
     webhooks: Webhook[];
 
     @Column({
-        type: DataType.JSONB,
+        type: DataType.JSON,
         defaultValue: {}
     })
     config: any;
 
     @Column({
-        type: DataType.JSONB,
+        type: DataType.JSON,
         defaultValue: {}
     })
     data: any;
@@ -120,13 +120,13 @@ export class Webhook extends Model<Webhook>{
     token: string;
     
     @Column({
-        type: DataType.JSONB,
+        type: DataType.JSON,
         defaultValue: {}
     })
     config: any;
 
     @Column({
-        type: DataType.JSONB,
+        type: DataType.JSON,
         defaultValue: {}
     })
     data: any;

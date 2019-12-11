@@ -1,4 +1,4 @@
 {
-  "dialect": "postgres",
+  "dialect": "sqlite",
   "forceSync": false
 }

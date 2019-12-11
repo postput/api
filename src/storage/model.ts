@@ -27,13 +27,13 @@ export class StorageType extends Model<StorageType>{
     name: string;
 
     @Column({
-        type: DataType.JSONB,
+        type: DataType.JSON,
         defaultValue: {}
     })
     config: any;
 
     @Column({
-        type: DataType.JSONB,
+        type: DataType.JSON,
         defaultValue: {}
     })
     data: any;
@@ -96,12 +96,12 @@ export class Storage extends Model<Storage>{
     type: StorageType;
 
     @Column({
-        type: DataType.JSONB
+        type: DataType.JSON
     })
     data: any;
 
     @Column({
-        type: DataType.JSONB,
+        type: DataType.JSON,
         defaultValue: {}
     })
     config: any;

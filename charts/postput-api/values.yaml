@@ -13,18 +13,6 @@ image:
   pullSecrets: []
 #  - mysecret
 
-
-postgresql:
-  enabled: true
-  fullnameOverride: &postgresqlHostname postgresql-postput
-  persistence:
-    enabled: false
-  global:
-    postgresql:
-      postgresqlDatabase: &postgresqlDatabase postput
-      postgresqlUsername: &postgresqlUsername postput
-      postgresqlPassword: &postgresqlPassword postput
-
 nameOverride: ""
 fullnameOverride: ""
 
@@ -47,17 +35,6 @@ ingress:
         - www.yourdomain.com
 
 env:
-  # Postgresql related env
-  - name: POSTGRESQL_HOST
-    value: *postgresqlHostname
-  - name: POSTGRESQL_PORT
-    value: 5432
-  - name: POSTGRESQL_DATABASE
-    value: *postgresqlDatabase
-  - name: POSTGRESQL_USERNAME
-    value: *postgresqlUsername
-  - name: POSTGRESQL_PASSWORD
-    value: *postgresqlPassword
 
   # Sequelize related env
   - name: SEQUELIZE_FORCE_SYNC
