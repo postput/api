@@ -19,6 +19,8 @@ import Logger from "../logger";
 import * as fileType from "file-type";
 import {FormHelper} from "../helper/form";
 import sharp = require("sharp");
+import * as IBM from 'ibm-cos-sdk';
+import * as OSS from 'ali-oss';
 
 export class DownloadService{
 
@@ -70,6 +72,12 @@ export class DownloadService{
                 break;
             case 'S3':
                 return this.downloadWithS3(storage, req, res);
+                break;
+            case 'IBM':
+                return this.downloadWithIBM(storage, req, res);
+                break;
+            case 'alibaba':
+                return this.downloadWithAlibaba(storage, req, res);
                 break;
             case 'azure':
                 storage.config.custom.provider = 'azure';
@@ -155,6 +163,50 @@ export class DownloadService{
         return download;
     }
 
+    async downloadWithIBM(storage, req, res){
+        const file = req.path.substr(req.path.indexOf('/', 1) + 1);
+        const customConfig = storage.config.custom;
+        const s3 = new IBM.S3(customConfig);
+        var params = {
+            Bucket: customConfig.bucket,
+            Key: file,
+        };
+
+        const download = new Download();
+
+        return new Promise<Download>((resolve, reject) => {
+            download.data = s3.getObject(params).send((err, data)=>{
+                if(err) {
+                    Logger.error(err);
+                    reject(err);
+                    return;
+                }
+                const type = FormHelper.guessFileType(data.Body, file);
+                res.setHeader('Content-Type', type.mime);
+                res.setHeader('Content-Length', data.ContentLength);
+                res.setHeader('Etag', data.ETag);
+                res.setHeader('Last-Modified', data.LastModified);
+                if(data.VersionId) {
+                    res.setHeader('Version-Id', data.VersionId);
+                }
+                download.data = StreamHelper.fromBuffer(data.Body);
+                resolve(download);
+            });
+        });
+    }
+
+    async downloadWithAlibaba(storage, req, res){
+        const file = req.path.substr(req.path.indexOf('/', 1) + 1);
+        const customConfig = storage.config.custom;
+        const client = new OSS(customConfig);
+        client.useBucket(customConfig.bucket);
+        const {res: response, content} = await client.get(file);
+        res.set(response.headers);
+        const download = new Download();
+        download.data = StreamHelper.fromBuffer(content);
+        return download;
+    }
+
     async downloadWithS3(storage, req, res){
         const file = req.path.substr(req.path.indexOf('/', 1) + 1);
         const customConfig = storage.config.custom;
@@ -172,7 +224,11 @@ export class DownloadService{
 
         return new Promise<Download>((resolve, reject) => {
             download.data = s3.getObject(params).send((err, data)=>{
-                if(err) Logger.error(err);
+                if(err){
+                    Logger.error(err);
+                    reject(err);
+                    return;
+                }
                 const type = FormHelper.guessFileType(data.Body, file);
                 res.setHeader('Content-Type', type.mime);
                 res.setHeader('Content-Length', data.ContentLength);

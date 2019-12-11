@@ -114,6 +114,10 @@ export class StorageService {
         return StorageRepository.instance.fetchByName(name);
     }
 
+    async findByTypeId(typeId) {
+        return StorageRepository.instance.fetchByTypeId(typeId);
+    }
+    
     async findByNameOrDefault(name) {
         return StorageRepository.instance.fetchByNameOrDefault(name);
     }

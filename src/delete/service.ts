@@ -9,7 +9,8 @@ import * as B2 from 'backblaze-b2';
 import {WebhookService} from "../webhook/service";
 import * as Client from 'ssh2-sftp-client';
 import {Download} from "../download/model";
-
+import * as IBM from 'ibm-cos-sdk';
+import * as OSS from "ali-oss";
 const ftpClient = new Client();
 
 export class DeleteService {
@@ -30,12 +31,13 @@ export class DeleteService {
 
     async delete(req, res) {
         const storage = await StorageService.instance.findByRequest(req);
-        await this.deleteFromStorage(storage, req);
-        res.status(200).end();
+        res.status(200);
+        await this.deleteFromStorage(storage, req, res);
+        res.end();
         await WebhookService.instance.send(storage, req);
     }
 
-    async deleteFromStorage(storage: Storage, req: Request) {
+    async deleteFromStorage(storage: Storage, req: Request, res) {
         switch (storage.type.name) {
             case 'memory':
                 return this.deleteFromMemory(storage, req);
@@ -54,9 +56,14 @@ export class DeleteService {
                 delete storage.config.custom['keyFile'];
                 return this.deleteWithPkgcloud(storage, req);
                 break;
-            case 's3':
-                storage.config.custom.provider = 'amazon';
-                return this.deleteWithPkgcloud(storage, req);
+            case 'S3':
+                return this.deleteFromS3(storage, req);
+                break;
+            case 'IBM':
+                return this.deleteFromIBM(storage, req);
+                break;
+            case 'alibaba':
+                return this.deleteFromAlibaba(storage, req, res);
                 break;
             case 'azure':
                 storage.config.custom.provider = 'azure';
@@ -122,8 +129,10 @@ export class DeleteService {
     async deleteFromS3(storage, req) {
         const file = req.path.substr(req.path.indexOf('/', 1) + 1);
         const customConfig = storage.config.custom;
-        const spacesEndpoint = new Endpoint(customConfig.endpoint);
-        customConfig.endpoint = spacesEndpoint;
+        if(customConfig.endpoint){
+            const s3Endpoint = new Endpoint(customConfig.endpoint);
+            customConfig.endpoint = s3Endpoint;
+        }
         const s3 = new S3(customConfig);
         var params = {
             Bucket: customConfig.bucket,
@@ -139,6 +148,39 @@ export class DeleteService {
             });
         });
     }
+
+    async deleteFromIBM(storage, req) {
+        const file = req.path.substr(req.path.indexOf('/', 1) + 1);
+        const customConfig = storage.config.custom;
+        const s3 = new IBM.S3(customConfig);
+        var params = {
+            Bucket: customConfig.bucket,
+            Key: file,
+        };
+        return new Promise((resolve, reject) => {
+            s3.deleteObject(params).send((err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+    async deleteFromAlibaba(storage, req, res) {
+        const file = req.path.substr(req.path.indexOf('/', 1) + 1);
+        const customConfig = storage.config.custom;
+        const client = new OSS(customConfig);
+        client.useBucket(customConfig.bucket);
+        //@ts-ignore
+        const {res: response} = await client.delete(file);
+        res.set(response.headers);
+        res.status(response.status);
+        return response;
+    }
+
+
 
     deleteFromMemory(storage, req) {
         return this.deleteFromFilesystemInterface(storage, req, fsm);

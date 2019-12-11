@@ -62,7 +62,7 @@ export class UploadServiceTest {
         }
         const response = await request(app.instance.express)
             .delete(fullUrl)
-            .expect(200);
+            .expect(res=> { return res.status >= 200 && res.status < 400});
         return response;
     }
 

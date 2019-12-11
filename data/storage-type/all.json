@@ -145,6 +145,40 @@
   {
     "model": "StorageType",
     "data": {
+      "id": 9,
+      "name": "IBM",
+      "config": {
+        "custom": {
+          "endpoint": "fdfgdfgdfgdfgdsdfgdfgghf",
+          "apiKeyId": "sdfgsdfgdsfgdfgsdfgsdfgsdfg",
+          "serviceInstanceId": "mybucketname",
+          "bucket": "sqd6f56sqd4f65s4df654sq6fd4"
+        },
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
+      "id": 10,
+      "name": "alibaba",
+      "config": {
+        "custom": {
+          "region": "oss-region",
+          "accessKeyId": "xxxxxxxxxxxxxxxxxxx",
+          "accessKeySecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "bucket": "my-bucket"
+        },
+        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
+      },
+      "data": {}
+    }
+  },
+  {
+    "model": "StorageType",
+    "data": {
       "id": 11,
       "name": "backblaze",
       "config": {

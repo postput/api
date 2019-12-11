@@ -24,6 +24,9 @@ import {WebhookService} from "../webhook/service";
 import Logger from "../logger";
 import * as Client from 'ssh2-sftp-client';
 const ftpClient = new Client();
+import * as IBM from 'ibm-cos-sdk';
+import * as OSS from 'ali-oss';
+import {Download} from "../download/model";
 
 export class UploadService {
 
@@ -117,6 +120,12 @@ export class UploadService {
             case 'S3':
                 return this.uploadWithS3(storage, req);
                 break;
+            case 'IBM':
+                return this.uploadWithIBM(storage, req);
+                break;
+            case 'alibaba':
+                return this.uploadWithAlibaba(storage, req);
+                break;
             case 'azure':
                 storage.config.custom.provider = 'azure';
                 return this.uploadWithPkgcloud(storage, req);
@@ -169,6 +178,18 @@ export class UploadService {
         return files;
     }
 
+    async uploadWithIBM(storage, req) {
+        const parts = await FormHelper.getBuffers(req);
+        const files = await this.uploadPartsWithIBM(storage, parts);
+        return files;
+    }
+
+    async uploadWithAlibaba(storage, req) {
+        const parts = await FormHelper.getBuffers(req);
+        const files = await this.uploadPartsWithAlibaba(storage, parts);
+        return files;
+    }
+    
     async uploadToMemory(storage, req) {
         const parts = await FormHelper.getBuffers(req);
         const files = await this.uploadPartsToMemory(storage, parts);
@@ -204,6 +225,16 @@ export class UploadService {
         return Promise.all<Upload>(files);
     }
 
+    uploadPartsWithIBM(storage, parts) {
+        const files = parts.map(part => this.uploadPartWithIBM(storage, part));
+        return Promise.all<Upload>(files);
+    }
+
+    uploadPartsWithAlibaba(storage, parts) {
+        const files = parts.map(part => this.uploadPartWithAlibaba(storage, part));
+        return Promise.all<Upload>(files);
+    }
+    
     uploadPartsToFilesystem(storage, parts) {
         const files = parts.map(part => this.uploadPartToFilesystem(storage, part));
         return Promise.all<Upload>(files);
@@ -267,6 +298,37 @@ export class UploadService {
         return upload;
     }
 
+    async uploadPartWithIBM(storage, upload: Upload) {
+        const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
+        const customConfig = storage.config.custom;
+        const s3 = new IBM.S3(customConfig);
+        var params = {
+            Bucket: customConfig.bucket,
+            Key: fileName,
+            Body: StreamHelper.fromBuffer(upload.data)
+        };
+        try{
+            await s3.upload(params).promise();
+        } catch (e){
+            Logger.error(e);
+        }
+
+        upload.fileName = fileName;
+        upload.urls = [fileName];
+        return upload;
+    }
+
+    async uploadPartWithAlibaba(storage, upload: Upload) {
+        const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
+        const customConfig = storage.config.custom;
+        const client = new OSS(customConfig);
+        client.useBucket(customConfig.bucket);
+        const response = await client.put(fileName, upload.data);
+        upload.fileName = fileName;
+        upload.urls = [fileName];
+        return upload;
+    }
+    
     uploadPartWithPkgCloud(storage, upload: Upload) {
         return new Promise((resolve, reject) => {
             const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;

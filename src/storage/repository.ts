@@ -48,6 +48,10 @@ export class StorageRepository{
         return Storage.findOne({ where: { name: name }, include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }
 
+    async fetchByTypeId(typeId: number){
+        return Storage.findOne({ where: { typeId }, include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: false}]}]});
+    }
+    
     async fetchByUUID(uuid: string){
         return Storage.findOne({ where: { uuid: uuid }, include:[{model: StorageType, required: true}, {model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }

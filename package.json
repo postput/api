@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@hapi/boom": "^7.4.2",
+    "@types/ali-oss": "^6.0.4",
     "@types/bluebird": "^3.5.29",
     "@types/fluent-ffmpeg": "^2.1.11",
     "@types/node": "^12.12.14",
@@ -16,6 +17,7 @@
     "@types/uuid": "^3.4.6",
     "@types/validator": "^12.0.1",
     "Blob": "^0.10.0",
+    "ali-oss": "^6.3.1",
     "aws-sdk": "^2.571.0",
     "backblaze-b2": "^1.5.0",
     "blob": "0.0.5",
@@ -32,6 +34,7 @@
     "ffmpeg-stream": "^0.6.0",
     "file-type": "^12.4.0",
     "fluent-ffmpeg": "^2.1.2",
+    "ibm-cos-sdk": "^1.5.4",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.15",
     "memfs": "^2.16.1",
