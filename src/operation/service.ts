@@ -133,6 +133,33 @@ export class OperationService {
                 });
                 return download.data.pipe(sharpFilter);
                 break;
+            case 'colourspace':
+            case 'colorspace':
+                sharpFilter = sharp().toColorspace(value);
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('Content-Length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'tint':
+                values = value.split(',').map(val => {
+                    const v = parseFloat(val) || 0;
+                    return v;
+                } );
+                sharpFilter = sharp().tint({r:values[0] || 0, g: values[1] || 0, b: values[2]|| 0, alpha: values[3] || 0 });
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('Content-Length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
+            case 'greyscale':
+            case 'grayscale':
+                sharpFilter = sharp().grayscale(value);
+                sharpFilter.on('info', (info) =>{
+                    res.setHeader('Content-Length', info.size);
+                });
+                return download.data.pipe(sharpFilter);
+                break;
             case 'gamma':
                 sharpFilter = sharp().gamma(value);
                 sharpFilter.on('info', (info) =>{
