@@ -1,6 +1,6 @@
 import {before, describe, it} from 'mocha'
 import {UploadServiceTest} from "../upload";
-import {StorageService} from "../../src/storage/service";
+import {ProviderService} from "../../src/provider/service";
 
 describe('Download from proxy',
     function () {
@@ -9,7 +9,7 @@ describe('Download from proxy',
         let storage;
 
         before(async () => {
-            storage = await StorageService.instance.findByName('my_proxy_files');
+            storage = await ProviderService.instance.findByName('my_proxy_files');
         });
         
 

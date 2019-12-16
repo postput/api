@@ -1,6 +1,6 @@
 import {Sequelize} from "sequelize-typescript";
 import {sequelizeConfig} from "./config/sequelize";
-import {StorageType, Storage} from "./storage/model";
+import {ProviderInstance} from "./provider/model";
 import {Webhook, WebhookType, WebhookTypes} from "./webhook/model";
 
 
@@ -18,7 +18,7 @@ export class SequelizeBuilder{
     private constructor(){
         var t = sequelizeConfig;
         this.sequelizeInstance = new Sequelize(t);
-        this.sequelizeInstance.addModels([StorageType, Storage, WebhookType, Webhook, WebhookTypes]);
+        this.sequelizeInstance.addModels([ProviderInstance, WebhookType, Webhook, WebhookTypes]);
     }
 
     private static getInstance() {

@@ -1,5 +1,5 @@
-import {StorageService} from "../storage/service";
-import {Storage} from "../storage/model";
+import {ProviderService} from "../provider/service";
+import {ProviderBuilder, ProviderInstance} from "../provider/model";
 import {fs as fsm} from "memfs";
 import * as fs from "fs";
 import * as pkgcloud from "pkgcloud";
@@ -30,15 +30,16 @@ export class DeleteService {
 
 
     async delete(req, res) {
-        const storage = await StorageService.instance.findByRequest(req);
+        const providerInstance = await ProviderService.instance.findByRequest(req);
+        const provider = ProviderBuilder.instance.build(providerInstance);
         res.status(200);
-        await this.deleteFromStorage(storage, req, res);
+        await provider.delete(req, res);
         res.end();
-        await WebhookService.instance.send(storage, req);
+        await WebhookService.instance.send(providerInstance, req);
     }
 
-    async deleteFromStorage(storage: Storage, req: Request, res) {
-        switch (storage.type.name) {
+    async deleteFromStorage(storage: ProviderInstance, req: Request, res) {
+        switch (storage.type) {
             case 'memory':
                 return this.deleteFromMemory(storage, req);
                 break;
@@ -51,7 +52,7 @@ export class DeleteService {
                 break;
             case 'gcs':
                 storage.config.custom.provider = 'google';
-                const fullPath = join(__dirname, '../../secret', storage.uuid + '.json');
+                const fullPath = join(__dirname, '../../secret', storage.name + '.json');
                 storage.config.custom.keyFilename = fullPath;
                 delete storage.config.custom['keyFile'];
                 return this.deleteWithPkgcloud(storage, req);
@@ -191,7 +192,7 @@ export class DeleteService {
     }
 
     deleteFromFilesystemInterface(storage, req, filesystemImplementation) {
-        const path = StorageService.getPath(storage);
+        const path = ProviderService.getPath(storage);
         const file = req.path.substr(req.path.indexOf('/', 1) + 1) ;
         return new Promise((resolve, reject) => {
             filesystemImplementation.unlink(join(path, file), (err, data) => {

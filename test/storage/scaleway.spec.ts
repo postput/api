@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {before, describe, it} from 'mocha'
 import {v4} from 'uuid';
 import {UploadServiceTest} from "../upload";
-import {StorageService} from "../../src/storage/service";
+import {ProviderService} from "../../src/provider/service";
 
 describe('Upload to Scaleway',
     function () {
@@ -13,7 +13,7 @@ describe('Upload to Scaleway',
         let storage;
 
         before(async () => {
-            storage = await StorageService.instance.findByName('my_scaleway_files');
+            storage = await ProviderService.instance.findByName('my_scaleway_files');
         });
 
         it('Should upload '+ nameOverride +' to Scaleway', async function () {

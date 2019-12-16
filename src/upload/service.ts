@@ -1,5 +1,5 @@
-import {StorageService} from "../storage/service";
-import {Storage} from "../storage/model";
+import {ProviderService} from "../provider/service";
+import {ProviderBuilder, ProviderInstance} from "../provider/model";
 import {fs as fsm} from "memfs";
 import * as fs from "fs";
 import * as uuid from 'uuid/v4';
@@ -50,18 +50,18 @@ export class UploadService {
 
     async post(req, res) {
 
-        const storage = await StorageService.instance.findByRequest(req);
-        const maxUploadSize = oc(storage).config.maxUploadSize(appConfig.max_upload_size || '100mb');
+        const providerInstance = await ProviderService.instance.findByRequest(req);
+        const maxUploadSize = oc(providerInstance).config.maxUploadSize(appConfig.max_upload_size || '100mb');
 
         const bodySize = this.getSize(req);
         const maxSize = bytes.parse(maxUploadSize);
 
             if(bodySize > maxSize){
-                throw entityTooLarge('The body size of this query is too big for this storage "'+ storage.name +'" ('+ bytes(bodySize) +' > '+ maxUploadSize + ')');
+                throw entityTooLarge('The body size of this query is too big for this storage "'+ providerInstance.name +'" ('+ bytes(bodySize) +' > '+ maxUploadSize + ')');
             }
 
-            if(storage.config.allowUpload === false) {
-                throw methodNotAllowed('Upload is not allowed on this storage. ('+ storage.name +'); To enable upload for this storage, set config.allowUpload= true on this storage.');
+            if(providerInstance.config.allowUpload === false) {
+                throw methodNotAllowed('Upload is not allowed on this storage. ('+ providerInstance.name +'); To enable upload for this storage, set config.allowUpload = true on this storage.');
             }
 
             if(req.query.url){
@@ -69,23 +69,18 @@ export class UploadService {
                 response.pipe(res);
                 return;
             }
-            const uploads = await this.uploadToStorage(storage, req);
-            uploads.forEach(upload => {
-                upload.urls = URLHelper.getUrls(storage, upload);
-            });
+            const provider = ProviderBuilder.instance.build(providerInstance);
 
-            /*
-            .then(calls => {
-                Logger.log(calls.toString());
-            }).catch(error => {
-                Logger.error(error)
-            });*/
+            const uploads = await provider.upload(req, res);
+            uploads.forEach(upload => {
+                upload.urls = URLHelper.getUrls(providerInstance, upload);
+            });
             res.json(serialize(uploads)).end();
-            await WebhookService.instance.send(storage, req);
+            await WebhookService.instance.send(providerInstance, req);
     }
 
     async postURL(req, res){
-        const storage = await StorageService.instance.findByRequest(req);
+        const storage = await ProviderService.instance.findByRequest(req);
         const url = req.query.url;
         const readStream = await request({url: url});
         const formData = {
@@ -96,10 +91,10 @@ export class UploadService {
         return request({method: 'POST', url: 'http://localhost:' + appConfig.listen_port + '/' + storage.name, formData: formData, qs: remainingQuery});
     }
     
-    async uploadToStorage(storage: Storage, req: Request) {
+    async uploadToStorage(storage: ProviderInstance, req: Request) {
 
 
-        switch (storage.type.name) {
+        switch (storage.type) {
             case 'memory':
                 return this.uploadToMemory(storage, req);
                 break;
@@ -112,7 +107,7 @@ export class UploadService {
                 break;
             case 'gcs':
                 storage.config.custom.provider = 'google';
-                const fullPath = join(__dirname, '../../secret', storage.uuid + '.json');
+                const fullPath = join(__dirname, '../../secret', storage.name + '.json');
                 storage.config.custom.keyFilename = fullPath;
                 delete storage.config.custom['keyFile'];
                 return this.uploadWithPkgcloud(storage, req);
@@ -198,9 +193,7 @@ export class UploadService {
 
     async uploadToFilesystem(storage, req) {
         const parts = await FormHelper.getBuffers(req);
-
         const files = await this.uploadPartsToFilesystem(storage, parts);
-
         return files;
     }
 
@@ -367,7 +360,7 @@ export class UploadService {
     uploadPartToFilesystemInterface(storage, upload, filesystemImplementation) {
         return new Promise((resolve, reject) => {
 
-            const path = StorageService.getPath(storage);
+            const path = ProviderService.getPath(storage);
             const fileName = upload.nameOverride || uuid() + '.' + upload.type.extension;
             const fullPath = join(path , fileName);
 

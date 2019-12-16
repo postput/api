@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {before, describe, it} from 'mocha'
 import {v4} from 'uuid';
 import {UploadServiceTest} from "../upload";
-import {StorageService} from "../../src/storage/service";
+import {ProviderService} from "../../src/provider/service";
 
 describe('Upload to memory',
     function () {
@@ -13,7 +13,7 @@ describe('Upload to memory',
         let storage;
 
         before(async () => {
-            storage = await StorageService.instance.findByName('my_memory_files');
+            storage = await ProviderService.instance.findByName('my_memory_files');
         });
 
         it('Should upload '+ nameOverride +' to memory', async function () {

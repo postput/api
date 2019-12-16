@@ -10,7 +10,7 @@ import {
     Unique, UpdatedAt
 } from "sequelize-typescript";
 import {date, identifier, list, object, serializable} from "serializr";
-import {StorageType, Storage} from "../storage/model";
+import {ProviderInstance} from "../provider/model";
 
 @Table
 export class WebhookType extends Model<WebhookType>{
@@ -88,14 +88,14 @@ export class Webhook extends Model<Webhook>{
     webhookTypes: WebhookType[];
 
     @serializable
-    @ForeignKey(() => Storage)
+    @ForeignKey(() => ProviderInstance)
     @AllowNull(false)
     @Column
     storageId: number;
 
-    //@serializable(object(Storage))
-    @BelongsTo(() => Storage)
-    storage: Storage;
+    //@serializable(object(ProviderInstance))
+    @BelongsTo(() => ProviderInstance)
+    storage: ProviderInstance;
     
     @serializable
     @Unique

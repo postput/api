@@ -1,8 +1,8 @@
-import {StorageService} from "../storage/service";
+import {ProviderService} from "../provider/service";
 import {Endpoint, S3} from 'aws-sdk';
 import {fs as fsm} from 'memfs';
 import * as fs from 'fs';
-import {Storage} from '../storage/model';
+import {ProviderBuilder, ProviderInstance} from '../provider/model';
 import {Download} from "./model";
 import * as pkgcloud from 'pkgcloud';
 import {OperationService} from "../operation/service";
@@ -39,20 +39,22 @@ export class DownloadService{
 
 
     async get(req, res){
-        const storage = await StorageService.instance.findByRequest(req);
+        const providerInstance = await ProviderService.instance.findByRequest(req);
 
-        const download = await this.downloadFromStorage(storage, req, res);
+        const provider = ProviderBuilder.instance.build(providerInstance);
+
+        const download = await provider.download(req, res);
 
         await OperationService.instance.applyOperations(download, req, res);
 
         download.data.pipe(res);
-        await WebhookService.instance.send(storage, req);
+        await WebhookService.instance.send(providerInstance, req);
     }
 
 
-    async downloadFromStorage(storage: Storage, req: Request, res: Response): Promise<Download> {
+    async downloadFromStorage(storage: ProviderInstance, req: Request, res: Response): Promise<Download> {
 
-        switch (storage.type.name) {
+        switch (storage.type) {
             case 'memory':
                 return this.downloadFromMemory(storage, req, res);
                 break;
@@ -65,7 +67,7 @@ export class DownloadService{
                 break;
             case 'gcs':
                 storage.config.custom.provider = 'google';
-                const fullPath = join(__dirname, '../../secret', storage.uuid +'.json');
+                const fullPath = join(__dirname, '../../secret', storage.name +'.json');
                 storage.config.custom.keyFilename = fullPath;
                 delete storage.config.custom['keyFile'];
                 return this.downloadWithPkgCloud(storage, req, res);
@@ -149,7 +151,7 @@ export class DownloadService{
     }
 
     async downloadFromFilesystemInterface(storage, req, res, filesystemInterface){
-        const path = StorageService.getPath(storage);
+        const path = ProviderService.getPath(storage);
         const fileName = req.path.substr(req.path.indexOf('/', 1) + 1);
         const filePath = join(path, fileName);
         const download = new Download();

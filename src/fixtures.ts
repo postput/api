@@ -1,5 +1,5 @@
 import {sequelizeConfig} from "./config/sequelize";
-import {StorageFixtures} from "./storage/fixtures";
+import {StorageFixtures} from "./provider/fixtures";
 import {WebhookFixtures} from "./webhook/fixtures";
 import {extname, join} from "path";
 import {readdirSync} from "fs";

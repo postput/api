@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {before, describe, it} from 'mocha'
 import {v4} from 'uuid';
 import {UploadServiceTest} from "../upload";
-import {StorageService} from "../../src/storage/service";
+import {ProviderService} from "../../src/provider/service";
 
 describe('Upload to google cloud storage',
     function () {
@@ -13,7 +13,7 @@ describe('Upload to google cloud storage',
         let storage;
 
         before(async () => {
-            storage = await StorageService.instance.findByName('my_google_files');
+            storage = await ProviderService.instance.findByName('my_google_files');
         });
 
         it('Should upload '+ nameOverride +' to google', async function () {

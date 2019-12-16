@@ -12,12 +12,13 @@ import {HealthCheckRoute} from "./health-check/route";
 import {DownloadController} from "./download/controller";
 import {DownloadRoute} from "./download/route";
 import {UploadRoute} from "./upload/route";
-import {StorageService} from "./storage/service";
+import {ProviderService} from "./provider/service";
 import appConfig from "./config/app";
 const cors = require('cors');
 import * as favicon from 'serve-favicon';
 import {join} from 'path';
 import {DeleteRoute} from "./delete/route";
+import {ProviderBuilder, ProviderInstance} from "./provider/model";
 
 export default class App {
 
@@ -81,7 +82,7 @@ export default class App {
         this.express.use(morgan('combined', { stream: {write: Logger.morganLog} }));
         await SequelizeBuilder.sequelize.sync({ force: sequelizeConfig.forceSync });
         await Fixtures.load();
-        await StorageService.instance.init();
+        await ProviderBuilder.instance.init();
         Logger.log('database created');
         this.express.use(cors());
 

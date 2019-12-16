@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {before, describe, it} from 'mocha'
 import {v4} from 'uuid';
 import {UploadServiceTest} from "../upload";
-import {StorageService} from "../../src/storage/service";
+import {ProviderService} from "../../src/provider/service";
 
 describe('Upload to Alibaba',
     function () {
@@ -13,7 +13,7 @@ describe('Upload to Alibaba',
         let storage;
 
         before(async () => {
-            storage = await StorageService.instance.findByTypeId(10);
+            storage = await ProviderService.instance.findByTypeId(10);
         });
 
         it('Should upload '+ nameOverride +' to Alibaba', async function () {

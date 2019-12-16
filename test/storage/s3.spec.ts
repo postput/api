@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {before, describe, it} from 'mocha'
 import {v4} from 'uuid';
 import {UploadServiceTest} from "../upload";
-import {StorageService} from "../../src/storage/service";
+import {ProviderService} from "../../src/provider/service";
 
 describe('Upload to Amazon s3',
     function () {
@@ -13,7 +13,7 @@ describe('Upload to Amazon s3',
         let storage;
 
         before(async () => {
-            storage = await StorageService.instance.findByName('my_s3_files');
+            storage = await ProviderService.instance.findByName('my_s3_files');
         });
 
         it('Should upload '+ nameOverride +' to Amazon S3', async function () {

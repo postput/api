@@ -1,4 +1,4 @@
-import {Storage} from '../storage/model'
+import {ProviderInstance} from '../provider/model'
 import {isEmpty, merge} from "lodash";
 import * as request from "request-promise";
 import Logger from "../logger";
@@ -18,7 +18,7 @@ export class WebhookService {
         return WebhookService.pInstance;
     }
 
-    async send(storage: Storage, req){
+    async send(storage: ProviderInstance, req){
         const webhooks = storage.webhooks;
         if(!isEmpty(webhooks)){
             const calls = [];

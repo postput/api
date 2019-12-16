@@ -46,8 +46,6 @@
     "multiparty": "^4.2.1",
     "node-fetch": "^2.6.0",
     "ntypescript": "^1.201706190042.1",
-    "pg": "^7.12.1",
-    "pg-hstore": "^2.3.3",
     "pkgcloud": "^2.2.0",
     "pretty-error": "^2.1.1",
     "read-chunk": "^3.2.0",

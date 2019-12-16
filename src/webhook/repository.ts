@@ -1,4 +1,4 @@
-import {Storage, StorageType} from "../storage/model";
+import {ProviderInstance, StorageType} from "../provider/model";
 import {Op} from "sequelize";
 
 export class StorageRepository{
