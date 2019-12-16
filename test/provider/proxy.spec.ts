@@ -9,7 +9,7 @@ describe('Download from proxy',
         let storage;
 
         before(async () => {
-            storage = await ProviderService.instance.findByName('my_proxy_files');
+            storage = await ProviderService.instance.findByType('proxy');
         });
         
 

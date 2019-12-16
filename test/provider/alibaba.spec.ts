@@ -4,7 +4,7 @@ import {v4} from 'uuid';
 import {UploadServiceTest} from "../upload";
 import {ProviderService} from "../../src/provider/service";
 
-describe('Upload to memory',
+describe('Upload to Alibaba',
     function () {
         this.timeout(100000);
         const uuid = v4();
@@ -13,19 +13,19 @@ describe('Upload to memory',
         let storage;
 
         before(async () => {
-            storage = await ProviderService.instance.findByName('my_memory_files');
+            storage = await ProviderService.instance.findByType('alibaba');
         });
 
-        it('Should upload '+ nameOverride +' to memory', async function () {
+        it('Should upload '+ nameOverride +' to Alibaba', async function () {
             const upload = await UploadServiceTest.instance.singleUpload(storage, filePath, nameOverride);
             expect(upload.type.extension).to.equal('jpg');
         });
 
-        it('Should download '+ nameOverride +' from memory', async function () {
+        it('Should download '+ nameOverride +' from Alibaba', async function () {
             const response = await UploadServiceTest.instance.download(storage, nameOverride);
         });
 
-        it('Should delete '+ nameOverride +' from memory', async function () {
+        it('Should delete '+ nameOverride +' from Alibaba', async function () {
             const response = await UploadServiceTest.instance.delete(storage, nameOverride);
         });
 

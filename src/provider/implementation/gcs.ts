@@ -36,8 +36,11 @@ export default class GCSProvider extends PKGCloudProvider{
         const keyFile = oc(this.instance).config.custom.keyFile(null);
         if (keyFile) {
             const fullPath = join(__dirname, '../../../secret', this.instance.id + '.json');
+            this.instance.config.custom.keyFilename = fullPath;
             writeFileSync(fullPath, JSON.stringify(keyFile));
         }
+
+
         return;
     }
 

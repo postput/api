@@ -10,8 +10,7 @@
         "access": {},
         "allowUpload": true,
         "urls": ["http://localhost:2000/", "https://www.my-other-domain.com", "http://caca.com"]
-      },
-      "data": {}
+      }
     }
   },
   {
@@ -27,8 +26,7 @@
         "access": {},
         "allowUpload": true,
         "urls": ["http://localhost:2000/", "http://caca.com", "https://www.my-other-domain.com"]
-      },
-      "data": {}
+      }
     }
   }
 ]

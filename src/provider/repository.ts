@@ -41,8 +41,9 @@ export class StorageRepository{
         return storage;
     }
 
+
     async fetchByName(name: string){
-        return ProviderInstance.findOne({ where: { name: name }, include:[{model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
+        return ProviderInstance.findOne({ where: { name }, include:[{model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
     }
 
     async fetchByType(type: string){

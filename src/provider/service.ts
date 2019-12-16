@@ -62,6 +62,9 @@ export class ProviderService {
         return this.findByNameOrDefault(firstPart);
     }
 
+    async findByType(type) {
+        return StorageRepository.instance.fetchByType(type);
+    }
 
     async findByName(name) {
         return StorageRepository.instance.fetchByName(name);

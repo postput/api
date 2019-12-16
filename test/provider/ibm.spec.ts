@@ -4,7 +4,7 @@ import {v4} from 'uuid';
 import {UploadServiceTest} from "../upload";
 import {ProviderService} from "../../src/provider/service";
 
-describe('Upload to Amazon s3',
+describe('Upload to IBM',
     function () {
         this.timeout(100000);
         const uuid = v4();
@@ -13,19 +13,19 @@ describe('Upload to Amazon s3',
         let storage;
 
         before(async () => {
-            storage = await ProviderService.instance.findByName('my_s3_files');
+            storage = await ProviderService.instance.findByType('ibm');
         });
 
-        it('Should upload '+ nameOverride +' to Amazon S3', async function () {
+        it('Should upload '+ nameOverride +' to IBM', async function () {
             const upload = await UploadServiceTest.instance.singleUpload(storage, filePath, nameOverride);
             expect(upload.type.extension).to.equal('jpg');
         });
 
-        it('Should download '+ nameOverride +' from Amazon S3', async function () {
+        it('Should download '+ nameOverride +' from IBM', async function () {
             const response = await UploadServiceTest.instance.download(storage, nameOverride);
         });
 
-        it('Should delete '+ nameOverride +' from Amazon S3', async function () {
+        it('Should delete '+ nameOverride +' from IBM', async function () {
             const response = await UploadServiceTest.instance.delete(storage, nameOverride);
         });
 
