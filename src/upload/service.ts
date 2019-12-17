@@ -1,33 +1,14 @@
 import {ProviderService} from "../provider/service";
-import {ProviderInstance} from "../provider/model";
-import {fs as fsm} from "memfs";
-import * as fs from "fs";
-import * as uuid from 'uuid/v4';
-import {Upload} from "./model";
 import {serialize} from "serializr";
-import {StreamHelper} from "../helper/streamHelper";
-import * as pkgcloud from "pkgcloud";
-import {FormHelper} from "../helper/form";
-import {join} from "path";
-import {S3, Endpoint} from 'aws-sdk';
 import {URLHelper} from "../helper/url";
 import {oc} from "ts-optchain";
 import * as request from "request";
 import appConfig from "../config/app";
-import {raw, urlencoded} from 'body-parser';
 import {entityTooLarge, methodNotAllowed} from '@hapi/boom'
 import * as bytes from 'bytes';
-import {query} from "winston";
-import * as B2 from 'backblaze-b2';
-import {merge} from 'lodash';
 import {WebhookService} from "../webhook/service";
-import Logger from "../logger";
-import * as Client from 'ssh2-sftp-client';
-const ftpClient = new Client();
-import * as IBM from 'ibm-cos-sdk';
-import * as OSS from 'ali-oss';
-import {Download} from "../download/model";
 import {ProviderBuilder} from "../provider/builder";
+
 
 export class UploadService {
 
