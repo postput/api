@@ -9,7 +9,8 @@ import {oc} from 'ts-optchain';
 import {fs as fsm} from "memfs";
 import * as fs from "fs";
 import Logger from "../logger";
-import {ProviderBuilder, ProviderInstance} from "./model";
+import {ProviderInstance} from "./model";
+import {ProviderBuilder} from "./builder";
 
 export class ProviderService {
 
@@ -24,11 +25,6 @@ export class ProviderService {
             ProviderService.pInstance = new ProviderService();
         }
         return ProviderService.pInstance;
-    }
-
-
-    static isStorageGivenInQuery(request: Request) {
-        return request.query.storageName || request.query.storageId;
     }
 
     async init() {

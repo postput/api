@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from '../model'
+import {ProviderInstance} from '../model'
 import {Download} from "../../download/model";
 import {Upload} from "../../upload/model";
 import {Endpoint, S3} from "aws-sdk";
@@ -8,6 +8,7 @@ import {StreamHelper} from "../../helper/streamHelper";
 import * as uuid from "uuid/v4";
 import {merge} from 'lodash';
 import * as pkgcloud from "pkgcloud";
+import {Provider, ProviderConfig} from "../interface";
 
 export default class PKGCloudProvider implements Provider{
 
@@ -22,6 +23,10 @@ export default class PKGCloudProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'pkgcloud';
     }
 
     async init(): Promise<void> {

@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from '../model'
+import {ProviderInstance} from '../model'
 import {Download} from "../../download/model";
 import {Upload} from "../../upload/model";
 import {FormHelper} from "../../helper/form";
@@ -6,10 +6,9 @@ import {StreamHelper} from "../../helper/streamHelper";
 import * as uuid from "uuid/v4";
 import {merge} from 'lodash';
 import * as OSS from "ali-oss";
+import {Provider, ProviderConfig} from "../interface";
 
 export default class AlibabaProvider implements Provider{
-
-    static type = 'alibaba';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -31,6 +30,10 @@ export default class AlibabaProvider implements Provider{
 
     async init(): Promise<void> {
         return;
+    }
+
+    getType(){
+        return 'alibaba';
     }
 
     async delete(req, res): Promise<void> {

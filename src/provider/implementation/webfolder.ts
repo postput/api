@@ -1,14 +1,13 @@
-import {Provider, ProviderConfig, ProviderInstance} from '../model'
+import {ProviderInstance} from '../model'
 import {Download} from "../../download/model";
 import {Upload} from "../../upload/model";
 import {merge} from 'lodash';
 import {Boom} from '@hapi/boom'
 import {resolve} from "url";
 import * as request from "request";
+import {Provider, ProviderConfig} from "../interface";
 
 export default class WebfolderProvider implements Provider{
-
-    static type = 'webfolder';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -28,6 +27,10 @@ export default class WebfolderProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'webfolder';
     }
 
     async init(): Promise<void> {

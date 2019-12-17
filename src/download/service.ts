@@ -1,7 +1,7 @@
 import {ProviderService} from "../provider/service";
-import {ProviderBuilder} from '../provider/model';
 import {OperationService} from "../operation/service";
 import {WebhookService} from "../webhook/service";
+import {ProviderBuilder} from "../provider/builder";
 
 export class DownloadService{
 

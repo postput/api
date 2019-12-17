@@ -1,6 +1,6 @@
 import {ProviderService} from "../provider/service";
-import {ProviderBuilder} from "../provider/model";
 import {WebhookService} from "../webhook/service";
+import {ProviderBuilder} from "../provider/builder";
 
 export class DeleteService {
 

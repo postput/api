@@ -1,5 +1,5 @@
 import {ProviderService} from "../provider/service";
-import {ProviderBuilder, ProviderInstance} from "../provider/model";
+import {ProviderInstance} from "../provider/model";
 import {fs as fsm} from "memfs";
 import * as fs from "fs";
 import * as uuid from 'uuid/v4';
@@ -27,6 +27,7 @@ const ftpClient = new Client();
 import * as IBM from 'ibm-cos-sdk';
 import * as OSS from 'ali-oss';
 import {Download} from "../download/model";
+import {ProviderBuilder} from "../provider/builder";
 
 export class UploadService {
 

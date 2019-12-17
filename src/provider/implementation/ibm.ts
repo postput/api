@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from '../model'
+import {ProviderInstance} from '../model'
 import {Download} from "../../download/model";
 import {Upload} from "../../upload/model";
 import {FormHelper} from "../../helper/form";
@@ -7,10 +7,9 @@ import * as uuid from "uuid/v4";
 import {merge} from 'lodash';
 import * as IBM from "ibm-cos-sdk";
 import Logger from "../../logger";
+import {Provider, ProviderConfig} from "../interface";
 
 export default class IBMProvider implements Provider{
-
-    static type = 'ibm';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -29,6 +28,10 @@ export default class IBMProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'ibm';
     }
 
     async init(): Promise<void> {

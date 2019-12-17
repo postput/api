@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from "../model";
+import {ProviderInstance} from "../model";
 import {Download} from "../../download/model";
 import {FormHelper} from "../../helper/form";
 import {StreamHelper} from "../../helper/streamHelper";
@@ -9,9 +9,9 @@ import {ProviderService} from "../service";
 import {join} from "path";
 
 import {fs as fsm} from "memfs";
+import {Provider, ProviderConfig} from "../interface";
 
 export default class MemoryProvider implements Provider{
-    static type = 'memory';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -24,6 +24,10 @@ export default class MemoryProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'memory';
     }
 
     init(): Promise<void> {

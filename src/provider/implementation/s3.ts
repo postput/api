@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from '../model'
+import {ProviderInstance} from '../model'
 import {Download} from "../../download/model";
 import {Upload} from "../../upload/model";
 import {Endpoint, S3} from "aws-sdk";
@@ -7,10 +7,9 @@ import {FormHelper} from "../../helper/form";
 import {StreamHelper} from "../../helper/streamHelper";
 import * as uuid from "uuid/v4";
 import {merge} from 'lodash';
+import {Provider, ProviderConfig} from "../interface";
 
 export default class S3Provider implements Provider{
-
-    static type = 's3';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -28,6 +27,10 @@ export default class S3Provider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 's3';
     }
 
     init(): Promise<void> {

@@ -1,12 +1,10 @@
-import {ProviderConfig} from '../model'
 import {oc} from "ts-optchain";
 import {join} from "path";
 import {writeFileSync} from "fs";
 import PKGCloudProvider from "./pkgcloud";
+import {ProviderConfig} from "../interface";
 
 export default class GCSProvider extends PKGCloudProvider{
-
-    static type = 'gcs';
 
     defaultConfig: ProviderConfig = {
         custom: {
@@ -31,6 +29,9 @@ export default class GCSProvider extends PKGCloudProvider{
         urls: ["http://localhost:2000/", "https://www.my-other-domain.com"]
     };
 
+    getType(){
+        return 'gcs';
+    }
 
     init(): Promise<void> {
         const keyFile = oc(this.instance).config.custom.keyFile(null);

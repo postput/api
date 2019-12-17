@@ -1,14 +1,13 @@
-import {Provider, ProviderConfig, ProviderInstance} from "../model";
+import {ProviderInstance} from "../model";
 import {Download} from "../../download/model";
 import {resolve} from "url";
 import * as request from "request";
 import {Upload} from "../../upload/model";
 import {Boom} from '@hapi/boom'
 import {merge, isEmpty} from 'lodash';
+import {Provider, ProviderConfig} from "../interface";
 
 export default class ProxyProvider implements Provider{
-
-    static type = 'proxy';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -23,6 +22,10 @@ export default class ProxyProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'proxy';
     }
 
     async init(): Promise<void> {

@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from "../model";
+import {ProviderInstance} from "../model";
 import {Endpoint, S3} from "aws-sdk";
 import {Download} from "../../download/model";
 import Logger from "../../logger";
@@ -10,9 +10,9 @@ import {merge} from 'lodash';
 import {ProviderService} from "../service";
 import {join} from "path";
 import {createReadStream, createWriteStream, mkdirSync, readFileSync, statSync, unlinkSync} from "fs";
+import {Provider, ProviderConfig} from "../interface";
 
 export default class FilesystemProvider implements Provider{
-    static type = 'filesystem';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -27,6 +27,10 @@ export default class FilesystemProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'filesystem';
     }
 
     init(): Promise<void> {

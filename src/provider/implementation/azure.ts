@@ -1,9 +1,7 @@
 import PKGCloudProvider from "./pkgcloud";
-import {ProviderConfig} from "../model";
+import {ProviderConfig} from "../interface";
 
 export default class AzureProvider extends PKGCloudProvider{
-
-    static type = 'azure';
 
     defaultConfig: ProviderConfig = {
         custom: {
@@ -16,5 +14,9 @@ export default class AzureProvider extends PKGCloudProvider{
         maxUploadSize: undefined,
         urls: ["http://localhost:2000/", "https://www.my-other-domain.com"]
     };
+
+    getType(){
+        return 'azure';
+    }
 
 }

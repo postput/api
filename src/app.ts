@@ -18,7 +18,8 @@ const cors = require('cors');
 import * as favicon from 'serve-favicon';
 import {join} from 'path';
 import {DeleteRoute} from "./delete/route";
-import {ProviderBuilder, ProviderInstance} from "./provider/model";
+import {ProviderInstance} from "./provider/model";
+import {ProviderBuilder} from "./provider/builder";
 
 export default class App {
 

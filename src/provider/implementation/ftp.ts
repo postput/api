@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from '../model'
+import {ProviderInstance} from '../model'
 import {Download} from "../../download/model";
 import {Upload} from "../../upload/model";
 import {FormHelper} from "../../helper/form";
@@ -9,10 +9,9 @@ import * as IBM from "ibm-cos-sdk";
 import Logger from "../../logger";
 import {join} from "path";
 import * as Client from 'ssh2-sftp-client';
+import {Provider, ProviderConfig} from "../interface";
 
 export default class FTPProvider implements Provider{
-
-    static type = 'ftp';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -31,6 +30,10 @@ export default class FTPProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'ftp';
     }
 
     async init(): Promise<void> {

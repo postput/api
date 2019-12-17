@@ -1,4 +1,4 @@
-import {Provider, ProviderConfig, ProviderInstance} from '../model'
+import {ProviderInstance} from '../model'
 import {Download} from "../../download/model";
 import {Upload} from "../../upload/model";
 import {Endpoint, S3} from "aws-sdk";
@@ -9,10 +9,9 @@ import * as uuid from "uuid/v4";
 import {merge} from 'lodash';
 import * as pkgcloud from "pkgcloud";
 import * as B2 from 'backblaze-b2';
+import {Provider, ProviderConfig} from "../interface";
 
 export default class BackbkazeProvider implements Provider{
-
-    static type = 'backblaze';
 
     instance: ProviderInstance;
     defaultConfig: ProviderConfig = {
@@ -30,6 +29,10 @@ export default class BackbkazeProvider implements Provider{
     public constructor(storage: ProviderInstance){
         this.instance = storage;
         storage.config = merge(this.defaultConfig, storage.config)
+    }
+
+    getType(){
+        return 'backblaze';
     }
 
     async init(): Promise<void> {
