@@ -21,7 +21,7 @@ services:
 - postgresql
 before_install:
 - openssl aes-256-cbc -K $encrypted_6d737e3f8fdd_key -iv $encrypted_6d737e3f8fdd_iv
-  -in custom.json.enc -out data/storage/custom/custom.json -d
+  -in custom.json.enc -out data/provider/custom/custom.json -d
 before_script:
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
   > ./cc-test-reporter
