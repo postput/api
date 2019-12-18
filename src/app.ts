@@ -20,6 +20,7 @@ import {join} from 'path';
 import {DeleteRoute} from "./delete/route";
 import {ProviderInstance} from "./provider/model";
 import {ProviderBuilder} from "./provider/builder";
+import {OperationBuilder} from "./operation/builder";
 
 export default class App {
 
@@ -84,6 +85,8 @@ export default class App {
         await SequelizeBuilder.sequelize.sync({ force: sequelizeConfig.forceSync });
         await Fixtures.load();
         await ProviderBuilder.instance.init();
+        await OperationBuilder.instance.init();
+        
         Logger.log('database created');
         this.express.use(cors());
 
