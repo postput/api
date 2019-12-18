@@ -1,3 +1,12 @@
 {
-  "reporter": ["lcov", "text-summary"]
+  "reporter": ["lcov", "text-summary"],
+  "include": [
+    "src/*.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "src/webhook/*.ts",
+    "**/*.json"
+  ]
 }
