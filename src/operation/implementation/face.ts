@@ -1,7 +1,6 @@
 import {BaseOperation} from "../model";
 import {Readable} from "stream";
 import {join} from 'path'
-import '@tensorflow/tfjs-node';
 import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
 import {StreamHelper} from "../../helper/streamHelper";
@@ -29,9 +28,10 @@ export default class FaceOperation extends BaseOperation{
     async apply(readable: Readable): Promise<Readable> {
         const buffer = await StreamHelper.toBuffer(readable);
         const img = await canvas.loadImage(buffer);
-        await faceapi.nets.ssdMobilenetv1.loadFromDisk(join(__dirname, '../../..', 'models'));
         //@ts-ignore
         const face = await faceapi.detectSingleFace(img);
+        if(!face) return StreamHelper.fromBuffer(buffer);
+
         let facePad = this.request.query['face-pad'] || 1.5;
         facePad = parseFloat(facePad);
         facePad = Math.max(facePad, 1);
@@ -47,6 +47,11 @@ export default class FaceOperation extends BaseOperation{
         width = Math.min(parseInt(Math.max(face.imageDims.width - left, 0)), width);
         //@ts-ignore
         height = Math.min(parseInt(Math.max(face.imageDims.height - top, 0)), height);
+
+        this.response.setHeader('X-Face-left', left);
+        this.response.setHeader('X-Face-Top', top);
+        this.response.setHeader('X-Face-Width', width);
+        this.response.setHeader('X-Face-Height', height);
 
         this.request.query['crop'] = true;
         this.request.query['crop-left'] = left;

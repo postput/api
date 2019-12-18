@@ -26,7 +26,7 @@ describe('Upload to filesystem',
         });
 
         it('Should download '+ nameOverride +' from filesystem with operations', async function () {
-             await UploadServiceTest.instance.download(storage, nameOverride, 'resize=100,100&rotate=90&mask=elipse&blur=5&format=webp');
+             await UploadServiceTest.instance.download(storage, nameOverride, 'face=true&face-pad=1.5&resize=200,200&saturate=0.6&&brightness=10&colorspace=cmyk&flip-x=true&flip-y=true&grayscale=true&hue=90&negate=true&tint=210,210,105,1&rotate=90&mask=elipse&blur=5&format=webp');
         });
 
         it('Should download jpeg '+ nameOverride , async function () {

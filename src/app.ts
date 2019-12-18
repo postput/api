@@ -1,26 +1,24 @@
 import * as express from "express";
-require('express-async-errors');
-import { Env } from "./helper/env";
-import { SequelizeBuilder } from './sequelizeBuilder'
+import {Env} from "./helper/env";
+import {SequelizeBuilder} from './sequelizeBuilder'
 import {Fixtures} from "./fixtures";
-
-import * as winston from "winston";
+import '@tensorflow/tfjs-node';
 import * as morgan from "morgan";
 import Logger from "./logger";
 import {sequelizeConfig} from "./config/sequelize";
 import {HealthCheckRoute} from "./health-check/route";
-import {DownloadController} from "./download/controller";
 import {DownloadRoute} from "./download/route";
 import {UploadRoute} from "./upload/route";
-import {ProviderService} from "./provider/service";
 import appConfig from "./config/app";
-const cors = require('cors');
 import * as favicon from 'serve-favicon';
 import {join} from 'path';
 import {DeleteRoute} from "./delete/route";
-import {ProviderInstance} from "./provider/model";
 import {ProviderBuilder} from "./provider/builder";
 import {OperationBuilder} from "./operation/builder";
+import * as faceapi from "face-api.js";
+
+require('express-async-errors');
+const cors = require('cors');
 
 export default class App {
 
@@ -86,7 +84,7 @@ export default class App {
         await Fixtures.load();
         await ProviderBuilder.instance.init();
         await OperationBuilder.instance.init();
-        
+        await faceapi.nets.ssdMobilenetv1.loadFromDisk(join(__dirname, '../', 'models'));
         Logger.log('database created');
         this.express.use(cors());
 

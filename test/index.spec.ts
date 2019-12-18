@@ -2,7 +2,7 @@ import {before, after} from 'mocha'
 import App from "../src/app";
 
 before(async function() {
-    this.timeout(10000);
+    this.timeout(20000);
     await App.instance.run();
 });
 
