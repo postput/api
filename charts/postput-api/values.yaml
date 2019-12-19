@@ -49,7 +49,7 @@ env:
     value: ['"http://changeme.com"']
 
 
-customStoragesMountPath: /opt/app/data/storage/custom
+customStoragesMountPath: /opt/app/data/provider/custom
 
 customStorages: >
   [

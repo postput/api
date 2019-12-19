@@ -52,16 +52,16 @@ spec:
               port: http
           volumeMounts:
             {{- if .Values.customStorages }}
-            - name: custom-storages
-              mountPath: {{ .Values.customStoragesMountPath }}/custom-storages.json
-              subPath: custom-storages.json
+            - name: custom-providers
+              mountPath: {{ .Values.customStoragesMountPath }}/custom-providers.json
+              subPath: custom-providers.json
               readOnly: true
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         {{- if .Values.customStorages }}
-        - name: custom-storages
+        - name: custom-providers
           secret:
             secretName: {{ template "postput.fullname" . }}
         {{- end }}
