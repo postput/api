@@ -1,6 +1,7 @@
 node_modules
 .git
 .env
+.deploy
 .idea
 .nyc_output
 coverage
