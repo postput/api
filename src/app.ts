@@ -37,11 +37,6 @@ export default class App {
     public deleteRoute = new DeleteRoute();
 
     private constructor(){
-        this.express.use(favicon(join(__dirname, '../public', 'favicon.ico')));
-        this.healthCheckRoute.routes(this.express);
-        this.downloadRoute.routes(this.express);
-        this.uploadRoute.routes(this.express);
-        this.deleteRoute.routes(this.express);
 
         this.express.use((err, req, res, next) => {
             Logger.error(err);
@@ -87,6 +82,12 @@ export default class App {
         await faceapi.nets.ssdMobilenetv1.loadFromDisk(join(__dirname, '../', 'models'));
         Logger.log('database created');
         this.express.use(cors());
+
+        this.express.use(favicon(join(__dirname, '../public', 'favicon.ico')));
+        this.healthCheckRoute.routes(this.express);
+        this.downloadRoute.routes(this.express);
+        this.uploadRoute.routes(this.express);
+        this.deleteRoute.routes(this.express);
 
         return this;
     }

@@ -20,11 +20,11 @@ export class StorageRepository{
 
 
     async fetchDefault(){
-        return ProviderInstance.findOne({ where: { isDefault: true }, include:[{model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
+        return ProviderInstance.findOne({ where: { isDefault: true }, include:[{model: Webhook, required: false, include:[{model: WebhookType, required: false}]}]});
     }
 
     async fetchFirst(){
-        return ProviderInstance.findOne({ order: [['id','ASC']], include:[{model: Webhook, required: false, include:[{model: WebhookType, required: true}]}]});
+        return ProviderInstance.findOne({ order: [['id','ASC']], include:[{model: Webhook, required: false, include:[{model: WebhookType, required: false}]}]});
     }
 
     async fetchByNameOrDefault(name: string){
