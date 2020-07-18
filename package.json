@@ -38,7 +38,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "ibm-cos-sdk": "^1.5.4",
     "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "memfs": "^2.16.1",
     "memoizee": "^0.4.14",
     "merge2": "^1.1.0",
