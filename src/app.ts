@@ -2,7 +2,7 @@ import * as express from "express";
 import {Env} from "./helper/env";
 import {SequelizeBuilder} from './sequelizeBuilder'
 import {Fixtures} from "./fixtures";
-import '@tensorflow/tfjs-node';
+//import '@tensorflow/tfjs-node';
 import * as morgan from "morgan";
 import Logger from "./logger";
 import {sequelizeConfig} from "./config/sequelize";
@@ -79,7 +79,7 @@ export default class App {
         await Fixtures.load();
         await ProviderBuilder.instance.init();
         await OperationBuilder.instance.init();
-        await faceapi.nets.ssdMobilenetv1.loadFromDisk(join(__dirname, '../', 'models'));
+        //await faceapi.nets.ssdMobilenetv1.loadFromDisk(join(__dirname, '../', 'models'));
         Logger.log('database created');
         this.express.use(cors());
 
