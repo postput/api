@@ -10,11 +10,14 @@ build:
 deploy:
   helm:
     releases:
-      - name: asset
-        chartPath: chart
+      - name: api
+        namespace: postput
+        chartPath: charts/api
         #wait: true
         #recreatePods: true
         #valuesFiles:
         #- helm-skaffold-values.yaml
+        setValues:
+          image.pullSecrets[0].name: gitlab
         values:
           imageOverride: registry.gitlab.com/postput/api

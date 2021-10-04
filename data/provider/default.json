@@ -2,30 +2,28 @@
   {
     "model": "Provider",
     "data": {
-      "name": "my_memory_files",
-      "isDefault": false,
-      "type": "memory",
-      "config": {
-        "custom": {},
-        "access": {},
-        "allowUpload": true,
-        "urls": ["http://localhost:2000/", "https://www.my-other-domain.com", "http://caca.com"]
-      }
-    }
-  },
-  {
-    "model": "Provider",
-    "data": {
-      "name": "my_filesystem_files",
-      "isDefault": true,
-      "type": "filesystem",
+      "name": "gcs",
+      "type": "gcs",
       "config": {
         "custom": {
-          "path": "public/default"
+          "keyFile": {
+            "type": "service_account",
+            "project_id": "testpostput",
+            "private_key_id": "<XXXXXXXXXXXXXXXXXXXXXXXX>",
+            "private_key": "-----BEGIN PRIVATE KEY-----<XXXXXXXXXXXXXXXXXXXXXXXX>-----END PRIVATE KEY-----\n",
+            "client_email": "<XXXXXXXXXXXXXXXXXXXXXXXX>.iam.gserviceaccount.com",
+            "client_id": "<XXXXXXXXXXXXXXXXXXXXXXXX>",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/<XXXXXXXXXXXXXXXXXXXXXXXX>.iam.gserviceaccount.com"
+          },
+          "container": "testpostput",
+          "projectId": "testpostput",
+          "provider": "google"
         },
-        "access": {},
         "allowUpload": true,
-        "urls": ["http://localhost:2000/", "http://caca.com", "https://www.my-other-domain.com"]
+        "urls": ["https://api.postput.com"]
       }
     }
   }

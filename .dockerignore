@@ -16,3 +16,5 @@ data/provider/*
 data/webhook/*
 !data/webhook/default.json
 !data/webhook/custom/.gitkeep
+ssl
+skaffold.yaml

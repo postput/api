@@ -22,17 +22,17 @@ service:
 #  nodePort: 33333
 
 ingress:
-  enabled: false
+  enabled: true
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: www.yourdomain.com
+    - host: api.postput.com
       paths: ["/"]
   tls:
-    - secretName: your-secret-name-tls
+    - secretName: postputcom-tls
       hosts:
-        - www.yourdomain.com
+        - api.postput.com
 
 env:
 
@@ -54,22 +54,19 @@ customStoragesMountPath: /opt/app/data/provider/custom
 customStorages: >
   [
     {
-      "model": "Storage",
+      "model": "Provider",
       "data": {
-        "name": "my_backblaze_files",
-        "uuid": "c9ba4b53-41fa-483f-9f79-e8bc8a66dd06",
-        "typeId": 11,
+        "name": "my_filesystem_files_2",
+        "isDefault": true,
+        "type": "filesystem",
         "config": {
           "custom": {
-            "applicationKeyId": "qsd5f46qs54fd654q6sdf46q5s",
-            "applicationKey": "fq6sd5f65q4sg654sf6g54sfd65g4s6",
-            "bucketName": "mybucketname",
-            "bucketId": "sqd6f56sqd4f65s4df654sq6fd4"
+            "path": "public/default"
           },
+          "access": {},
           "allowUpload": true,
-          "urls": ["http://localhost:2000/", "https://www.my-other-domain.com"]
-        },
-        "data": {}
+          "urls": ["http://localhost:2000/", "http://caca.com", "https://www.my-other-domain.com"]
+        }
       }
     }
   ]

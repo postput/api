@@ -10,10 +10,11 @@ secret/*
 !public/.gitkeep
 !secret/.gitkeep
 data/provider/*
-!data/provider/default.json
+!data/provider/default.json.dist
 !data/provider/custom/custom.json.dist
 !data/provider/custom/.gitkeep
 data/webhook/*
 !data/webhook/default.json
 !data/webhook/custom/.gitkeep
 !data/webhook/custom/custom.json.dist
+ssl
