@@ -19,7 +19,7 @@
     "@types/validator": "^12.0.1",
     "Blob": "^0.10.0",
     "ali-oss": "^6.3.1",
-    "aws-sdk": "^2.571.0",
+    "aws-sdk": "^2.814.0",
     "backblaze-b2": "^1.5.0",
     "blob": "0.0.5",
     "blocked": "^1.2.1",
