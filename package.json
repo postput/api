@@ -34,7 +34,7 @@
     "express-query-int": "^3.0.0",
     "face-api.js": "^0.22.0",
     "ffmpeg-stream": "^0.6.0",
-    "file-type": "^12.4.0",
+    "file-type": "^16.5.4",
     "fluent-ffmpeg": "^2.1.2",
     "ibm-cos-sdk": "^1.5.4",
     "isomorphic-fetch": "^2.2.1",
